@@ -23,11 +23,11 @@ class AuthService {
 
         const userByEmail = await userRepository.getByEmail(email);
         if (userByEmail) {
-            throw new ServerError('Email ya en uso!', 400)
+            throw new ServerError('Email ya registrado!', 400)
         }
         const userByUsername = await userRepository.getByUsername(name);
         if (userByUsername) {
-            throw new ServerError('Nombre de usuario ya en uso!', 400)
+            throw new ServerError('Nombre de usuario ya registrado!', 400)
         }
         const passwordHashed = await bcrypt.hash(password, 12)
         const userCreated = await userRepository.create(name, email, passwordHashed);
