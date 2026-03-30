@@ -12,9 +12,13 @@ import userRepository from "../repository/user.repository.js";
 import bcrypt from 'bcrypt'
 
 class AuthService {
-    async register({ name, email, password }) {
-        if (!name || !email || !password) {
-            throw new ServerError("Email, nombre de usuario y contraseña son obligatorios", 400);
+    async register({ name, email, password, confirmPassword }) {
+        if (!name || !email || !password || !confirmPassword) {
+            throw new ServerError("Todos los campos son obligatorios", 400);
+        }
+
+        if (password !== confirmPassword) {
+            throw new ServerError("Las contraseñas no coinciden", 400);
         }
 
         const userByEmail = await userRepository.getByEmail(email);

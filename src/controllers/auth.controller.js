@@ -7,9 +7,9 @@ class AuthController {
 
         try {
 
-            const { email, name, password } = req.body;
+            const { email, name, password, confirmPassword } = req.body;
 
-            await authService.register({ name, email, password })
+            await authService.register({ name, email, password, confirmPassword })
 
             return res.status(201).json({
                 ok: true,
