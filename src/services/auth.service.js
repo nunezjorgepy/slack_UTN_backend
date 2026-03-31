@@ -165,7 +165,7 @@ class AuthService {
                 html: `
                     <h1> Restablecimiento de contraseña</h1>
                     <p>Has solicitado restablecer tu contraseña. Haz clic en el enlace para hacerlo</p>
-                    <a href="${ENVIRONMENT.URL_BACKEND + `/api/auth/reset-password/${reset_password_token}`}">Click aqui para restablecer</a>
+                    <a href="${ENVIRONMENT.URL_FRONTEND + `/reset-password/${reset_password_token}`}">Click aqui para restablecer</a>
                     <span>Si no reconoces este registro, desestima este mail.</span>
                 `
             })
@@ -184,6 +184,7 @@ class AuthService {
             throw new ServerError("Todos los campos son obligatorios", 400)
         }
         try {
+            // Verificamos que el token sea valido
             const { email } = jwt.verify(reset_password_token, ENVIRONMENT.JWT_SECRET_KEY);
             const user = await userRepository.getByEmail(email);
             if (!user) {
