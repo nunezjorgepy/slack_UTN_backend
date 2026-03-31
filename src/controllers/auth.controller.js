@@ -85,7 +85,11 @@ class AuthController {
 
             await authService.verifyEmail({ verify_email_token })
 
-            response.status(200).send(`<h1>Mail verificado exitosamente</h1>`)
+            return response.status(200).json({
+                ok: true,
+                status: 200,
+                message: "El correo electronico ha sido verificado exitosamente"
+            })
         }
         catch (error) {
             //Errores esperables en el sistema
