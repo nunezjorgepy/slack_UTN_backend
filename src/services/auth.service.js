@@ -130,7 +130,7 @@ class AuthService {
                 html: `
                     <h1>Bienvenido ${name}</h1>
                     <p>Te has registrado correctamente, necesitamos verificar tu correo electronico</p>
-                    <a href="${ENVIRONMENT.URL_BACKEND + `/api/auth/verify-email?verify_email_token=${verify_email_token}`}">Click aqui para verificar</a>
+                    <a href="${ENVIRONMENT.URL_FRONTEND + `/verify-email?verify_email_token=${verify_email_token}`}">Click aqui para verificar (Link al Frontend)</a>
                     <span>Si no reconoces este registro desestima este mail.</span>
                 `
             }
