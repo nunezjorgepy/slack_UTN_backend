@@ -19,19 +19,24 @@ const workspaceSchema = new mongoose.Schema({
     description: {
         type: String,
     },
+    url_image: {
+        type: String,
+    },
+    isActive: {
+        type: Boolean,
+        required: true,
+        default: true,
+    },
     created_at: {
         type: Date,
         required: true,
         default: Date.now,
     },
-    active: {
-        type: Boolean,
+    update_at: {
+        type: Date,
         required: true,
-        default: true,
-    },
-    url_image: {
-        type: String,
-    },
+        default: Date.now,
+    }
 });
 
 const Workspace = mongoose.model("Workspace", workspaceSchema);

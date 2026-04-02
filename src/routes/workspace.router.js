@@ -16,4 +16,10 @@ workspaceRouter.get(
     workspaceController.getWorkspaces
 )
 
+workspaceRouter.post(
+    '/create',
+    authMiddleware,
+    workspaceController.create
+)
+
 export default workspaceRouter

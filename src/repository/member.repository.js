@@ -9,10 +9,10 @@ WorkspaceMemberRepository
 
 import WorkspaceMember from "../models/workspaceMember.model.js"
 class WorkspaceMemberRepository {
-    async create(fk_id_workspace, fk_id_user, role) {
+    async create(fk_id_user, fk_id_workspace, role) {
         await WorkspaceMember.create({
-            fk_id_workspace: fk_id_workspace,
             fk_id_user: fk_id_user,
+            fk_id_workspace: fk_id_workspace,
             role: role
         })
     }
