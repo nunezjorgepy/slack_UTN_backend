@@ -16,6 +16,46 @@ class WorkspaceMemberRepository {
             role: role
         })
     }
+
+    async getWorkspaceListByUserId(user_id){
+        /**
+         *  Consigue la lista de todos los espacios de trabajo de un usuario
+         * @param {string} user_id - Identificador en mongoDB del usuario
+         * @returns {Array<Object>} Lista con objetos. Cada objeto representa un espacio de trabajo
+         */
+        /* 
+            Consigue la lista de todos los espacios de trabajo del usaurio con la id pasada.
+
+            Parámetros:
+                user_id: _id en mongoDb del usuario al cual se le buscan sus espacios de trabajo
+            
+            Return:
+                Una lista con todos los espacios de trabajo.
+        */
+
+        //Toda la lista de miembros donde el usuario sea miembro
+        const member = await WorkspaceMember.find({fk_id_user: user_id})
+        .populate('fk_id_workspace')
+
+        const members_mapped = member.map(
+            (member) => {
+                return {
+                    member_id: member._id,
+                    member_role: member.role,
+                    member_created_at: member.created_at,
+                    
+                    workspace_id: member.fk_id_workspace._id,
+                    workspace_title: member.fk_id_workspace.title,
+                    workspace_description: member.fk_id_workspace.description
+                }
+            }
+        )
+
+        console.log(members_mapped)
+
+        return members_mapped
+    }
+
     async deleteById(workspace_member_id) {
         await WorkspaceMember.findByIdAndDelete(workspace_member_id)
     }
@@ -30,9 +70,7 @@ class WorkspaceMemberRepository {
         )
         return new_workspace_member
     }
-    async getAll() {
-        await WorkspaceMember.find()
-    }
+
     async getMemberList(fk_id_workspace) {
 
         /* 
@@ -65,28 +103,7 @@ class WorkspaceMemberRepository {
         return members_mapped
     }
 
-    async getWorkspaceListByUserId(user_id){
-
-        //Toda la lista de miembros donde el usuario sea miembro
-        const members = await WorkspaceMember.find({fk_id_user: user_id})
-        .populate('fk_id_workspace')
-
-        const members_mapped = members.map(
-            (member) => {
-                return {
-                    member_id: member._id,
-                    member_role: member.role,
-                    member_created_at: member.created_at,
-                    
-                    workspace_id: member.fk_id_workspace._id,
-                    workspace_title: member.fk_id_workspace.title,
-                    workspace_description: member.fk_id_workspace.description
-                }
-            }
-        )
-
-        return members_mapped
-    }
+    
 }
 const workspaceMemberRepository = new WorkspaceMemberRepository()
 export default workspaceMemberRepository
