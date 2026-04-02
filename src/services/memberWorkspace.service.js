@@ -17,6 +17,21 @@ class MemberWorkspaceService {
             throw error
         }
     }
+
+    async findOwnerByUserAndWorkspaceId(user, workspace_id){
+        if(!user || !workspace_id) {
+            throw new ServerError("Todos los campos son obligatorios", 404)
+        }
+
+        try {
+            await workspaceMemberRepository.getWorkspaceOwnerByUserandWorkspaceId(
+                user.id,
+                workspace_id
+            )
+        } catch (error) {
+            throw error
+        }
+    }
 }
 
 const memberWorkspaceService = new MemberWorkspaceService()
