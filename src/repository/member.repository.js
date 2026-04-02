@@ -57,7 +57,7 @@ class WorkspaceMemberRepository {
     }
 
     async getWorkspaceOwnerByUserandWorkspaceId(fk_id_user, fk_id_workspace){
-        await WorkspaceMember.find({
+        return await WorkspaceMember.find({
             fk_id_user,
             fk_id_workspace,
             role: 'owner'

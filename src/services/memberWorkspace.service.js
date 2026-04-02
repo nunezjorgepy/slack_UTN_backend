@@ -8,7 +8,7 @@ class MemberWorkspaceService {
             throw new ServerError("Todos los campos son obligatorios", 404)
         }
         try {
-            await workspaceMemberRepository.create(
+            return await workspaceMemberRepository.create(
                 user_id,
                 workspace_id,
                 role
@@ -24,7 +24,7 @@ class MemberWorkspaceService {
         }
 
         try {
-            await workspaceMemberRepository.getWorkspaceOwnerByUserandWorkspaceId(
+            return await workspaceMemberRepository.getWorkspaceOwnerByUserandWorkspaceId(
                 user.id,
                 workspace_id
             )
