@@ -45,6 +45,24 @@ class WorkspaceController {
         }
     }
 
+    async getOnlyActive(req, res) {
+        try {
+            const workspaces = await workspaceService.getOnlyActive()
+            res.json(
+                {
+                    ok: true,
+                    status: 200,
+                    message: 'Espacios de trabajo obtenidos',
+                    data: {
+                        workspaces
+                    }
+                }
+            )
+        } catch (error) {
+            throw error
+        }
+    }
+
     async create(req, res) {
         try {
             const { title, description = '', url_image = '' } = req.body

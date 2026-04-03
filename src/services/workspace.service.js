@@ -23,6 +23,14 @@ class WorkscapeService {
         }
     }
 
+    async getOnlyActive() {
+        try {
+            return await workspaceRepository.getOnlyActive()
+        } catch (error) {
+            throw error
+        }
+    }
+
     async edit( workspace_id, title, description, url_image ) {
         if (!workspace_id || !title || !description || !url_image) {
             throw new ServerError("Todos los campos son obligatorios", 400)

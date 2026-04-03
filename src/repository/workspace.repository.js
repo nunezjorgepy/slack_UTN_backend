@@ -18,6 +18,14 @@ class WorkspaceRepository {
         })
     };
 
+    async getOnlyActive(){
+        return await WorkspaceModel.find(
+            {
+                isActive: true
+            }
+        )
+    }
+
     async edit(workspace_id, title, description, url_image) {
         return await WorkspaceModel.updateOne(
             {
