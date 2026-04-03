@@ -16,7 +16,7 @@ async function checkOwnerMiddleware(req, res, next){
     
     
         if (!user || !workspace_id) {
-            throw new ServerError("Faltan datos", 401)
+            throw new ServerError("Faltan datos", 400)
         }
     
         const foundOwner = await memberWorkspaceService.findOwnerByUserAndWorkspaceId(
@@ -26,7 +26,7 @@ async function checkOwnerMiddleware(req, res, next){
     
         // Si no se encuentra el owner o no tiene autorización
         if (!foundOwner || foundOwner.length === 0) {
-            throw new ServerError("No tenes autorización", 400)
+            throw new ServerError("No tenes autorización", 401)
         }
     
         next()

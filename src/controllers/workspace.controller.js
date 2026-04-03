@@ -3,14 +3,14 @@ import workspaceMemberRepository from "../repository/member.repository.js"
 import workspaceService from "../services/workspace.service.js"
 
 class WorkspaceController {
-    async getWorkspaces(request, response) {
+    async getWorkspaces(req, res) {
         try {
             //Cliente consultante
-            const user = request.user
+            const user = req.user
 
             //Traer la lista de espacios de trabajo asociados al usuario
             const workspaces = await workspaceMemberRepository.getWorkspaceListByUserId(user.id)
-            response.json(
+            res.json(
                 {
                     ok: true, 
                     status: 200,
@@ -45,10 +45,10 @@ class WorkspaceController {
         }
     }
 
-    async create(request, response) {
+    async create(req, res) {
         try {
-            const { title, description, url_image = '' } = request.body
-            const user = request.user
+            const { title, description = '', url_image = '' } = req.body
+            const user = req.user
             await workspaceService.create(
                 user,
                 title,
@@ -56,7 +56,7 @@ class WorkspaceController {
                 url_image
             )
 
-            response.status(201).json(
+            res.status(201).json(
                 {
                     ok: true,
                     status: 201,
@@ -66,7 +66,7 @@ class WorkspaceController {
         } catch (error) {
             //Errores esperables en el sistema
             if (error instanceof ServerError) {
-                return response.status(error.status).json(
+                return res.status(error.status).json(
                     {
                         ok: false,
                         status: error.status,
@@ -76,7 +76,7 @@ class WorkspaceController {
             }
             else {
                 console.error('Error inesperado en el registro', error)
-                return response.status(500).json(
+                return res.status(500).json(
                     {
                         ok: false,
                         status: 500,
@@ -84,6 +84,30 @@ class WorkspaceController {
                     }
                 )
             }
+        }
+    }
+
+    async edit(req, res) {
+        const { workspace_id } = req.params
+        const { title, description = '', url_image = '' } = req.body
+
+        try {
+            await workspaceService.edit(
+                workspace_id,
+                title,
+                description,
+                url_image
+            )
+
+            res.status(200).json(
+                {
+                    ok: true,
+                    status: 200,
+                    message: "Espacio editado exitósamente."
+                }
+            )
+        } catch (error) {
+            throw error
         }
     }
 
