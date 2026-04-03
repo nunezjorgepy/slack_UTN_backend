@@ -23,11 +23,30 @@ workspaceRouter.post(
     workspaceController.create
 )
 
+workspaceRouter.post(
+    '/edit/:workspace_id',
+    authMiddleware,
+    checkOwnerMiddleware,
+    (req, res) => {
+        console.log('Editing Workspace')
+
+        return res.status(200).json(
+            {
+                ok: true,
+                status: 200,
+                message: 'Espacio editado'
+            }
+        )
+    }
+)
+
 workspaceRouter.delete(
     '/:workspace_id',
     authMiddleware,
     checkOwnerMiddleware,
     workspaceController.softDelete
 )
+
+
 
 export default workspaceRouter

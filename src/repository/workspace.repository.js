@@ -17,6 +17,19 @@ class WorkspaceRepository {
             url_image,
         })
     };
+
+    async edit(workspace_id, title, description, url_image) {
+        return await WorkspaceModel.updateOne(
+            {
+                _id: workspace_id
+            },
+            {
+                title,
+                description,
+                url_image
+            }
+        )
+    }
     
     async softDelete(workspace_id) {
         return await WorkspaceModel.updateOne(
