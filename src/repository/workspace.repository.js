@@ -1,11 +1,3 @@
-/* 
-Crear la class WorkspaceRepository con los sig metodos:
-- create()
-- daleteById()
-- getById()
-- updateById()
-*/
-
 import WorkspaceModel from "../models/workspace.model.js";
 class WorkspaceRepository {
     // TODO: Documentar
@@ -17,6 +9,10 @@ class WorkspaceRepository {
             url_image,
         })
     };
+
+    async getById(workspace_id) {
+        return await WorkspaceModel.findById(workspace_id)
+    }
 
     async getOnlyActive(){
         return await WorkspaceModel.find(
@@ -50,5 +46,6 @@ class WorkspaceRepository {
         )
     }
 }
+
 const workspaceRepository = new WorkspaceRepository()
 export default workspaceRepository;
