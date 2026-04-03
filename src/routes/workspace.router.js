@@ -27,13 +27,7 @@ workspaceRouter.delete(
     '/:workspace_id',
     authMiddleware,
     checkOwnerMiddleware,
-    (req, res) => {
-        return res.status(200).json({
-            ok: true,
-            status: 200,
-            message: "Espacio eliminado con éxito"
-        })
-    }
+    workspaceController.softDelete
 )
 
 export default workspaceRouter

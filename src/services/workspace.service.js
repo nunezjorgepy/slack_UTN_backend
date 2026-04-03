@@ -22,6 +22,18 @@ class WorkscapeService {
             throw error
         }
     }
+
+    async softDelete(workspace_id) {
+        if (!workspace_id) {
+            throw new ServerError("Debe proporcionar un id", 401)
+        }
+
+        try {
+            await workspaceRepository.softDelete(workspace_id)
+        } catch (error) {
+            throw error
+        }
+    }
 }
 
 const workspaceService = new WorkscapeService()

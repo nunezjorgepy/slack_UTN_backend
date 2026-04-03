@@ -86,6 +86,42 @@ class WorkspaceController {
             }
         }
     }
+
+    async softDelete(req, res) {
+        const { workspace_id } = req.params
+
+        try {
+            await workspaceService.softDelete(workspace_id)
+
+            res.status(200).json(
+                {
+                    ok: true,
+                    status: 200,
+                    message: "Espacio eliminado exitosamente."
+                }
+            )
+        } catch (error) {
+            if (error instanceof ServerError) {
+                return res.status(error.status).json(
+                    {
+                        ok: false,
+                        status: error.status,
+                        message: error.message
+                    }
+                )
+            }
+            else {
+                console.error('Error inesperado en el registro', error)
+                return res.status(500).json(
+                    {
+                        ok: false,
+                        status: 500,
+                        message: "Internal server error"
+                    }
+                )
+            }
+        }
+    }
 }
 
 const workspaceController = new WorkspaceController()

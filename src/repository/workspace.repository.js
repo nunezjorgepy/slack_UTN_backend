@@ -18,6 +18,16 @@ class WorkspaceRepository {
         })
     };
     
+    async softDelete(workspace_id) {
+        return await WorkspaceModel.updateOne(
+            {
+                _id: workspace_id
+            },
+            {
+                isActive: false
+            }
+        )
+    }
 }
 const workspaceRepository = new WorkspaceRepository()
 export default workspaceRepository;
