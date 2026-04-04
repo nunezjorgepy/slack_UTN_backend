@@ -23,15 +23,6 @@ class WorkspaceMemberRepository {
          * @param {string} user_id - Identificador en mongoDB del usuario
          * @returns {Array<Object>} Lista con objetos. Cada objeto representa un espacio de trabajo
          */
-        /* 
-            Consigue la lista de todos los espacios de trabajo del usaurio con la id pasada.
-
-            Parámetros:
-                user_id: _id en mongoDb del usuario al cual se le buscan sus espacios de trabajo
-            
-            Return:
-                Una lista con todos los espacios de trabajo.
-        */
 
         //Toda la lista de miembros donde el usuario sea miembro
         const member = await WorkspaceMember.find({fk_id_user: user_id})
@@ -50,8 +41,6 @@ class WorkspaceMemberRepository {
                 }
             }
         )
-
-        console.log(members_mapped)
 
         return members_mapped
     }

@@ -1,0 +1,8 @@
+
+
+class MemberWorkspaceController {
+
+    async getActiveWorkspacesByUserId() {
+        
+    }
+}
