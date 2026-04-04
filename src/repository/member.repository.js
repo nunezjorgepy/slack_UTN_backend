@@ -53,6 +53,13 @@ class WorkspaceMemberRepository {
         })
     }
 
+    async getActiveWorkspacesByUserId(fk_id_user) {
+        const activeWorkspaces = await WorkspaceMember.find({fk_id_user, isActive: true })
+        .populate('fk_id_workspace', 'title description url_image')
+        
+        return activeWorkspaces
+    }
+
     async deleteById(workspace_member_id) {
         await WorkspaceMember.findByIdAndDelete(workspace_member_id)
     }

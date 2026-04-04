@@ -1,5 +1,6 @@
 import { Router } from "express";
 import authMiddleware from "../middlewares/authMiddleware.js";
+import memberWorkspaceController from "../controllers/member.controller.js";
 
 
 const memberWorkspaceRouter = Router()
@@ -7,15 +8,7 @@ const memberWorkspaceRouter = Router()
 memberWorkspaceRouter.get(
     '/active',
     authMiddleware,
-    (req, res) => {
-        console.log(`Trae los espacios activos de ${req.user.name}`)
-        res.status(200).json(
-            {
-                ok: true,
-                message: "Espacios activos obtenidos exitosamente."
-            }
-        )
-    }
+    memberWorkspaceController.getActiveWorkspacesByUserId
 )
 
 

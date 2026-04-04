@@ -32,6 +32,20 @@ class MemberWorkspaceService {
             throw error
         }
     }
+
+    async getActiveWorkspacesByUserId(user_id) {
+        try {
+            if (!user_id) {
+                throw new ServerError("Todos los campos son obligatorios", 404)
+            }
+
+            return await workspaceMemberRepository.getActiveWorkspacesByUserId(
+                user_id
+            )
+        } catch (error) {
+            throw error
+        }
+    }
 }
 
 const memberWorkspaceService = new MemberWorkspaceService()
