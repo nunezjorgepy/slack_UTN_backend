@@ -54,10 +54,37 @@ class WorkspaceMemberRepository {
     }
 
     async getActiveWorkspacesByUserId(fk_id_user) {
+        /**
+         * Consigue la lista de todos los espacios de trabajo activos de un usuario
+         * @param {string} fk_id_user - Identificador en mongoDB del usuario
+         * @returns {Array<Object>} Lista con objetos. Cada objeto representa un espacio de trabajo
+         */
+
+        // Encuentro la lista de espacios de trabajo activos
         const activeWorkspaces = await WorkspaceMember.find({fk_id_user, isActive: true })
+        .populate('fk_id_user', 'name email')
         .populate('fk_id_workspace', 'title description url_image')
+
+        const activeWorkspaces_mapped = activeWorkspaces.map(
+            (member) => {
+                /* Normalizo */
+                return {
+                    member_workspace_id: member._id,
+                    member_workspace_created_at: member.created_at,
+                    
+                    user_role: member.role,
+                    user_id: member.fk_id_user._id,
+                    user_name: member.fk_id_user.name,
+                    user_email: member.fk_id_user.email,
+                    
+                    workspace_id: member.fk_id_workspace._id,
+                    workspace_title: member.fk_id_workspace.title,
+                    workspace_description: member.fk_id_workspace.description
+                }
+            }
+        )
         
-        return activeWorkspaces
+        return activeWorkspaces_mapped
     }
 
     async deleteById(workspace_member_id) {
