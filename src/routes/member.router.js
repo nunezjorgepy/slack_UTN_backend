@@ -11,5 +11,11 @@ memberWorkspaceRouter.get(
     memberWorkspaceController.getActiveWorkspacesByUserId
 )
 
+memberWorkspaceRouter.get(
+    '/list/:workspace_id',
+    authMiddleware,
+    memberWorkspaceController.getMemberList
+)
+
 
 export default memberWorkspaceRouter

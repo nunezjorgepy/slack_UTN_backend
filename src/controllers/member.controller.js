@@ -29,6 +29,32 @@ class MemberWorkspaceController {
             throw error
         }
     }
+
+    async getMemberList(req, res) {
+        const workspace_id = req.params.workspace_id
+        
+        try {
+            if(!workspace_id) {
+                throw new ServerError('Todos los campos son obligatorios', 400)
+            }
+
+            const memberList = await memberWorkspaceService.getMemberList(workspace_id)
+            
+            res.status(200).json(
+                {
+                    ok: true,
+                    status: 200,
+                    message: "Lista de miembros obtenida.",
+                    data: {
+                        memberList
+                    }
+                }
+            )
+            
+        } catch (error) {
+            throw error
+        }
+    }
 }
 
 const memberWorkspaceController = new MemberWorkspaceController()
