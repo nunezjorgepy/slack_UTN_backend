@@ -1,13 +1,13 @@
 import ServerError from "../helpers/error.helper.js"
 import workspaceMemberRepository from "../repository/member.repository.js"
+import mongoose from "mongoose"
 
 
 function verifyMemberWorkspaceMiddleware(valid_roles = []) {
     return async function (req, res, next) {
-        const { user } = req
-        const { workspace_id } = req.params
+        const { user, workspace } = req
 
-        if (!workspace_id) {
+        if (!workspace) {
             throw new ServerError('No se proporcionó el espacio de trabajo', 400)
         }
 
@@ -15,8 +15,13 @@ function verifyMemberWorkspaceMiddleware(valid_roles = []) {
             throw new ServerError('No se proporcionó el usuario', 400)
         }
 
+        // Verifico si es una id valida
+        if (!mongoose.Types.ObjectId.isValid(workspace._id)) {
+            throw new ServerError('No se proporcionó una id valida', 400)
+        }
+
         try {
-            const member = await workspaceMemberRepository.getUserById(user.id, workspace_id)
+            const member = await workspaceMemberRepository.getUserById(user.id, workspace._id)
 
             if (!member) {
                 throw new ServerError('El usuario no es miembro del workspace', 404)

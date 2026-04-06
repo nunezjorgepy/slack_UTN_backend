@@ -117,7 +117,7 @@ class WorkspaceMemberRepository {
          * @param {string} fk_id_workspace - Identificador en mongoDB del espacio de trabajo
          * @returns {Object} Objeto con los datos del usuario
          */
-        return await WorkspaceMember.find(
+        return await WorkspaceMember.findOne(
             {
                 fk_id_user,
                 fk_id_workspace

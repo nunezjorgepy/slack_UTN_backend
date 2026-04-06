@@ -2,10 +2,10 @@ import jwt from 'jsonwebtoken'
 import ENVIRONMENT from '../config/environment.config.js'
 import ServerError from '../helpers/error.helper.js'
 
-function authMiddleware(request, response, next) {
+function authMiddleware(req, res, next) {
     try {
         //El token se envia en el header de authorization NORMALMENTE
-        const auth_header = request.headers.authorization //'Bearer token'
+        const auth_header = req.headers.authorization //'Bearer token'
         if(!auth_header){
             throw new ServerError('Token faltante', 401)
         }
@@ -20,13 +20,13 @@ function authMiddleware(request, response, next) {
         //Valido el token
         const payload = jwt.verify(auth_token, ENVIRONMENT.JWT_SECRET_KEY)
 
-        //IMPORTANTE!!!, guardo en la request la sesion del usuario
-        request.user = payload
+        //IMPORTANTE!!!, guardo en la req la sesion del usuario
+        req.user = payload
         next()
     }
     catch (error) {
         if( error instanceof jwt.JsonWebTokenError ){
-            return response.status(401).json(
+            return res.status(401).json(
                 {
                     ok: false,
                     status: 401,
@@ -36,7 +36,7 @@ function authMiddleware(request, response, next) {
         }
         //Errores esperables en el sistema
         if (error instanceof ServerError) {
-            return response.status(error.status).json(
+            return res.status(error.status).json(
                 {
                     ok: false,
                     status: error.status,
@@ -46,7 +46,7 @@ function authMiddleware(request, response, next) {
         }
         else {
             console.error('Error inesperado en el registro', error)
-            return response.status(500).json(
+            return res.status(500).json(
                 {
                     ok: false,
                     status: 500,

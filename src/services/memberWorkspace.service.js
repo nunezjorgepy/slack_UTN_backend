@@ -68,7 +68,7 @@ class MemberWorkspaceService {
             }
 
             const existingMember = await workspaceMemberRepository.getUserById(fk_id_user, fk_id_workspace)
-            if (existingMember.length > 0) {
+            if (existingMember) {
                 throw new ServerError("El usuario ya es miembro del espacio de trabajo", 400)
             }
 

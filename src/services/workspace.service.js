@@ -58,7 +58,7 @@ class WorkscapeService {
     }
 
     async edit( workspace_id, title, description, url_image ) {
-        if (!workspace_id || !title || !description || !url_image) {
+        if (!workspace_id || !title) {
             throw new ServerError("Todos los campos son obligatorios", 400)
         }
         try {
