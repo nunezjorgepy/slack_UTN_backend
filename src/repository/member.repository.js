@@ -63,7 +63,7 @@ class WorkspaceMemberRepository {
         // Encuentro la lista de espacios de trabajo activos
         const activeWorkspaces = await WorkspaceMember.find({fk_id_user, isActive: true })
         .populate('fk_id_user', 'name email')
-        .populate('fk_id_workspace', 'title description url_image')
+        .populate('fk_id_workspace', 'title description url_image isActive')
 
         const activeWorkspaces_mapped = activeWorkspaces.map(
             (member) => {
@@ -80,14 +80,19 @@ class WorkspaceMemberRepository {
                     workspace_id: member.fk_id_workspace._id,
                     workspace_title: member.fk_id_workspace.title,
                     workspace_description: member.fk_id_workspace.description,
-                    workspace_url_image: member.fk_id_workspace.url_image
+                    workspace_url_image: member.fk_id_workspace.url_image,
+                    workspace_is_active: member.fk_id_workspace.isActive
                 }
             }
+        )
+
+        const activeWorkspaces_filtered = activeWorkspaces_mapped.filter(
+            (workspace) => workspace.workspace_is_active
         )
         
         /* TODO: verificar si esta bien después de crear el endpoint para agregar miembros */
         const activeWorkspaces_with_members = await Promise.all(
-            activeWorkspaces_mapped.map(async (workspace) => {
+            activeWorkspaces_filtered.map(async (workspace) => {
                 const members = await this.getMemberList(workspace.workspace_id);
                 return {
                     ...workspace,
