@@ -104,6 +104,20 @@ class WorkspaceMemberRepository {
     async getById(workspace_member_id) {
         await WorkspaceMember.findById(workspace_member_id)
     }
+    async getUserById(fk_id_user, fk_id_workspace) {
+        /**
+         * Consigue un usuario por id de usuario y id de espacio de trabajo
+         * @param {string} fk_id_user - Identificador en mongoDB del usuario
+         * @param {string} fk_id_workspace - Identificador en mongoDB del espacio de trabajo
+         * @returns {Object} Objeto con los datos del usuario
+         */
+        return await WorkspaceMember.find(
+            {
+                fk_id_user,
+                fk_id_workspace
+            }
+        )
+    }
     async updateRoleById(member_id, role) {
         const new_workspace_member = await WorkspaceMember.findByIdAndUpdate(
             member_id,

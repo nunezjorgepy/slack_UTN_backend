@@ -67,8 +67,8 @@ class MemberWorkspaceService {
                 throw new ServerError("Todos los campos son obligatorios", 404)
             }
 
-            const existingMember = await workspaceMemberRepository.getById(fk_id_user, fk_id_workspace)
-            if (existingMember) {
+            const existingMember = await workspaceMemberRepository.getUserById(fk_id_user, fk_id_workspace)
+            if (existingMember.length > 0) {
                 throw new ServerError("El usuario ya es miembro del espacio de trabajo", 400)
             }
 
