@@ -67,7 +67,7 @@ class WorkspaceController {
         try {
             const { title, description = '', url_image = '' } = req.body
             const user = req.user
-            await workspaceService.create(
+            const workspace = await workspaceService.create(
                 user,
                 title,
                 description,
@@ -78,7 +78,10 @@ class WorkspaceController {
                 {
                     ok: true,
                     status: 201,
-                    message: 'Espacio de trabajo creado'
+                    message: 'Espacio de trabajo creado',
+                    data: {
+                        workspace
+                    }
                 }
             )
         } catch (error) {

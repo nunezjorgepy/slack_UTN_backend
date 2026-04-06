@@ -84,7 +84,18 @@ class WorkspaceMemberRepository {
             }
         )
         
-        return activeWorkspaces_mapped
+        /* TODO: verificar si esta bien después de crear el endpoint para agregar miembros */
+        const activeWorkspaces_with_members = await Promise.all(
+            activeWorkspaces_mapped.map(async (workspace) => {
+                const members = await this.getMemberList(workspace.workspace_id);
+                return {
+                    ...workspace,
+                    members
+                };
+            })
+        );
+        
+        return activeWorkspaces_with_members;
     }
 
     async deleteById(workspace_member_id) {
@@ -130,7 +141,7 @@ class WorkspaceMemberRepository {
                 }
             }
         )
-        console.log(members_mapped)
+        
         return members_mapped
     }
 
