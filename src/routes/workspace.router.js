@@ -23,6 +23,12 @@ workspaceRouter.get(
     workspaceController.getOnlyActive
 )
 
+workspaceRouter.get(
+    '/:workspace_id',
+    authMiddleware,
+    workspaceController.getOne
+)
+
 workspaceRouter.post(
     '/create',
     authMiddleware,
