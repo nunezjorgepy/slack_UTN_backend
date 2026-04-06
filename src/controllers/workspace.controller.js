@@ -48,17 +48,24 @@ class WorkspaceController {
         }
     }
 
-    async getOne(req, res) {
+    async getById(req, res) {
+        /**
+         * Descripción: Obtiene un espacio de trabajo por su ID y la lista de miembros
+         * @param {string} workspace_id - ID del espacio de trabajo
+         * @returns {JSON} - Espacio de trabajo
+         */
         const { workspace_id } = req.params
         try {
-            const workspace = await workspaceService.getOne(workspace_id)
+            const workspace = await workspaceService.getById(workspace_id)
+            const members = await workspaceMemberRepository.getMemberList(workspace_id)
             res.json(
                 {
                     ok: true,
                     status: 200,
                     message: 'Espacio de trabajo obtenido',
                     data: {
-                        workspace
+                        workspace,
+                        members
                     }
                 }
             )

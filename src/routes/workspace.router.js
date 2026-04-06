@@ -30,7 +30,7 @@ workspaceRouter.get(
     authMiddleware,
     verifyWorkspaceMiddleware,
     verifyMemberWorkspaceMiddleware(),
-    workspaceController.getOne
+    workspaceController.getById
 )
 
 workspaceRouter.post(

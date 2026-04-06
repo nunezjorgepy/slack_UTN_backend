@@ -24,7 +24,7 @@ class WorkscapeService {
         }
     }
 
-    async getOne(workspace_id) {
+    async getById(workspace_id) {
         if (!workspace_id) {
             throw new ServerError("Debe proporcionar un id", 400)
         }
