@@ -79,7 +79,8 @@ class WorkspaceMemberRepository {
                     
                     workspace_id: member.fk_id_workspace._id,
                     workspace_title: member.fk_id_workspace.title,
-                    workspace_description: member.fk_id_workspace.description
+                    workspace_description: member.fk_id_workspace.description,
+                    workspace_url_image: member.fk_id_workspace.url_image
                 }
             }
         )
