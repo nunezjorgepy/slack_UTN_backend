@@ -60,6 +60,27 @@ class MemberWorkspaceService {
             throw error
         }
     }
+
+    async addMember(fk_id_user, fk_id_workspace, role) {
+        try {
+            if (!fk_id_user || !fk_id_workspace || !role) {
+                throw new ServerError("Todos los campos son obligatorios", 404)
+            }
+
+            const existingMember = await workspaceMemberRepository.getById(fk_id_user, fk_id_workspace)
+            if (existingMember) {
+                throw new ServerError("El usuario ya es miembro del espacio de trabajo", 400)
+            }
+
+            return await workspaceMemberRepository.create(
+                fk_id_user,
+                fk_id_workspace,
+                role
+            )
+        } catch (error) {
+            throw error
+        }
+    }
 }
 
 const memberWorkspaceService = new MemberWorkspaceService()

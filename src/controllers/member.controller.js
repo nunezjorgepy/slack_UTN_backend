@@ -55,6 +55,37 @@ class MemberWorkspaceController {
             throw error
         }
     }
+
+    async addMember(req, res) {
+        const { fk_id_user, role } = req.body
+        const fk_id_workspace = req.params.workspace_id
+        
+        try {
+            if(!fk_id_user || !fk_id_workspace || !role) {
+                throw new ServerError('Todos los campos son obligatorios', 400)
+            }
+
+            const newMember = await memberWorkspaceService.addMember(
+                fk_id_user,
+                fk_id_workspace,
+                role
+            )
+            
+            res.status(200).json(
+                {
+                    ok: true,
+                    status: 200,
+                    message: "Miembro agregado.",
+                    data: {
+                        newMember
+                    }
+                }
+            )
+            
+        } catch (error) {
+            throw error
+        }
+    }
 }
 
 const memberWorkspaceController = new MemberWorkspaceController()
