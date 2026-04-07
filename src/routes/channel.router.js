@@ -47,10 +47,7 @@ channelRouter.delete(
     authMiddleware,
     verifyWorkspaceMiddleware,
     verifyMemberWorkspaceMiddleware(['owner', 'admin']),
-    /* channelController.delete */
-    (req, res) => {
-        res.send('Channel deleted')
-    }
+    channelController.softDelete
 )
 
 export default channelRouter
