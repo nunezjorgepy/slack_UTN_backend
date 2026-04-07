@@ -40,7 +40,7 @@ class ChannelRepository {
         const channel = await ChannelModel.findOne({ _id: channel_id })
 
         // Normalizo el canal, solamente si existe
-        const normalized_channel = channel ?
+        const normalized_channel = channel &&
             {
                 channel_id: channel._id,
                 channel_name: channel.name,
@@ -48,7 +48,6 @@ class ChannelRepository {
                 workspace_id: channel.fk_id_workspace,
                 channel_is_active: channel.is_active
             }
-            : null
         return normalized_channel
     }
 
@@ -60,7 +59,7 @@ class ChannelRepository {
         )
 
         // Normalizo el canal
-        const normalized_channel = channel ?
+        const normalized_channel = channel &&
             {
                 channel_id: channel._id,
                 channel_name: channel.name,
@@ -68,7 +67,6 @@ class ChannelRepository {
                 workspace_id: channel.fk_id_workspace,
                 channel_is_active: channel.is_active
             }
-            : null
         return normalized_channel
     }
 
@@ -78,7 +76,7 @@ class ChannelRepository {
         )
 
         // Normalizo el canal
-        const normalized_channel = channel ?
+        const normalized_channel = channel &&
             {
                 channel_id: channel._id,
                 channel_name: channel.name,
@@ -86,7 +84,6 @@ class ChannelRepository {
                 workspace_id: channel.fk_id_workspace,
                 channel_is_active: channel.is_active
             }
-            : null
         return normalized_channel
     }
 }
