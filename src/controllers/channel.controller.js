@@ -1,0 +1,49 @@
+import ServerError from "../helpers/error.helper.js"
+import channelService from "../services/channel.service.js"
+
+
+class ChannelController {
+    async create(req, res) {
+        try {
+            const workspace = req.workspace
+            const { name, description } = req.body
+
+            const channel = await channelService.create(workspace._id, name, description)
+            
+            res.status(201).json(
+                {
+                    ok: true,
+                    status: 201,
+                    message: 'Canal creado exitosamente',
+                    data: {
+                        channel
+                    }
+                }
+            )
+        } catch (error) {
+            //Errores esperables en el sistema
+            if (error instanceof ServerError) {
+                return res.status(error.status).json(
+                    {
+                        ok: false,
+                        status: error.status,
+                        message: error.message
+                    }
+                )
+            }
+            else {
+                console.error('Error inesperado en el registro', error)
+                return res.status(500).json(
+                    {
+                        ok: false,
+                        status: 500,
+                        message: "Internal server error"
+                    }
+                )
+            }
+        }
+    }   
+}
+
+const channelController = new ChannelController()
+export default channelController

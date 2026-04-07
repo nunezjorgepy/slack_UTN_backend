@@ -20,6 +20,16 @@ const channelSchema = new mongoose.Schema(
             required: true,
             default: Date.now,
         },
+        updated_at: {
+            type: Date,
+            required: true,
+            default: Date.now,
+        },
+        is_active: {
+            type: Boolean,
+            required: true,
+            default: true,
+        }
     }
 )
 const Channel = mongoose.model("Channel", channelSchema)

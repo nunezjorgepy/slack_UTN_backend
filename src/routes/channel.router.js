@@ -9,7 +9,7 @@ Opcional: un PUT /:workspace_id/channel/:channel_id para editar el canal.
 */
 
 import {Router} from 'express'
-/* import channelController from '../controllers/channel.controller.js' */
+import channelController from '../controllers/channel.controller.js'
 
 // Middlewares
 import authMiddleware from '../middlewares/authMiddleware.js'
@@ -23,10 +23,7 @@ channelRouter.post(
     authMiddleware,
     verifyWorkspaceMiddleware,
     verifyMemberWorkspaceMiddleware(['owner', 'admin']),
-    /* channelController.create */
-    (req, res) => {
-        res.send('Channel created')
-    }
+    channelController.create
 )
 
 channelRouter.get(
