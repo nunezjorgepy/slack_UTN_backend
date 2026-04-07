@@ -35,7 +35,7 @@ class ChannelService {
         }
 
         try {
-            const channel = await channelRepository.getById(workspace_id, channel_id)
+            const channel = await channelRepository.getById(channel_id)
             return channel
         } catch (error) {
             throw error
