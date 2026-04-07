@@ -10,14 +10,14 @@ class ChannelRepository {
         })
 
         // Normalizo el canal
-        const normalizedChannel = {
+        const normalized_channel = {
             channel_id: channel._id,
             channel_name: channel.name,
             channel_description: channel.description,
             workspace_id: channel.fk_id_workspace,
             channel_is_active: channel.is_active
         }
-        return normalizedChannel
+        return normalized_channel
     }
 
     async getAll(workspace_id) {
@@ -39,15 +39,17 @@ class ChannelRepository {
     async getById(channel_id) {
         const channel = await ChannelModel.findOne({ _id: channel_id })
 
-        // Normalizo el canal
-        const normalizedChannel = {
-            channel_id: channel._id,
-            channel_name: channel.name,
-            channel_description: channel.description,
-            workspace_id: channel.fk_id_workspace,
-            channel_is_active: channel.is_active
-        }
-        return normalizedChannel
+        // Normalizo el canal, solamente si existe
+        const normalized_channel = channel ?
+            {
+                channel_id: channel._id,
+                channel_name: channel.name,
+                channel_description: channel.description,
+                workspace_id: channel.fk_id_workspace,
+                channel_is_active: channel.is_active
+            }
+            : null
+        return normalized_channel
     }
 
     async softDelete(workspace_id, channel_id) {
@@ -58,14 +60,16 @@ class ChannelRepository {
         )
 
         // Normalizo el canal
-        const normalizedChannel = {
-            channel_id: channel._id,
-            channel_name: channel.name,
-            channel_description: channel.description,
-            workspace_id: channel.fk_id_workspace,
-            channel_is_active: channel.is_active
-        }
-        return normalizedChannel
+        const normalized_channel = channel ?
+            {
+                channel_id: channel._id,
+                channel_name: channel.name,
+                channel_description: channel.description,
+                workspace_id: channel.fk_id_workspace,
+                channel_is_active: channel.is_active
+            }
+            : null
+        return normalized_channel
     }
 
     async delete(workspace_id, channel_id) {
@@ -74,14 +78,16 @@ class ChannelRepository {
         )
 
         // Normalizo el canal
-        const normalizedChannel = {
-            channel_id: channel._id,
-            channel_name: channel.name,
-            channel_description: channel.description,
-            workspace_id: channel.fk_id_workspace,
-            channel_is_active: channel.is_active
-        }
-        return normalizedChannel
+        const normalized_channel = channel ?
+            {
+                channel_id: channel._id,
+                channel_name: channel.name,
+                channel_description: channel.description,
+                workspace_id: channel.fk_id_workspace,
+                channel_is_active: channel.is_active
+            }
+            : null
+        return normalized_channel
     }
 }
 
