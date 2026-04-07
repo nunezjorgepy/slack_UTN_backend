@@ -67,6 +67,22 @@ class ChannelRepository {
         }
         return normalizedChannel
     }
+
+    async delete(workspace_id, channel_id) {
+        const channel = await ChannelModel.findOneAndDelete(
+            { fk_id_workspace: workspace_id, _id: channel_id }
+        )
+
+        // Normalizo el canal
+        const normalizedChannel = {
+            channel_id: channel._id,
+            channel_name: channel.name,
+            channel_description: channel.description,
+            workspace_id: channel.fk_id_workspace,
+            channel_is_active: channel.is_active
+        }
+        return normalizedChannel
+    }
 }
 
 const channelRepository = new ChannelRepository()

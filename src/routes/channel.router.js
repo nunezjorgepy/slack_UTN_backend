@@ -46,12 +46,21 @@ channelRouter.get(
 )
 
 channelRouter.delete(
-    '/:workspace_id/channel/:channel_id',
+    '/:workspace_id/channel/soft-delete/:channel_id',
     authMiddleware,
     verifyWorkspaceMiddleware,
     verifyMemberWorkspaceMiddleware(['owner', 'admin']),
     verifyChannelMiddleware,
     channelController.softDelete
+)
+
+channelRouter.delete(
+    '/:workspace_id/channel/delete/:channel_id',
+    authMiddleware,
+    verifyWorkspaceMiddleware,
+    verifyMemberWorkspaceMiddleware(['owner', 'admin']),
+    verifyChannelMiddleware,
+    channelController.delete
 )
 
 export default channelRouter

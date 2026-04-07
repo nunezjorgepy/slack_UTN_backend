@@ -162,6 +162,46 @@ class ChannelController {
             }
         }
     }
+
+    async delete(req, res) {
+        try {
+            const { workspace, channel } = req
+            
+            const channel_found = await channelService.delete(workspace._id, channel.channel_id)
+            
+            res.status(200).json(
+                {
+                    ok: true,
+                    status: 200,
+                    message: 'Canal eliminado exitosamente',
+                    data: {
+                        channel: channel_found
+                    }
+                }
+            )
+        } catch (error) {
+            //Errores esperables en el sistema
+            if (error instanceof ServerError) {
+                return res.status(error.status).json(
+                    {
+                        ok: false,
+                        status: error.status,
+                        message: error.message
+                    }
+                )
+            }
+            else {
+                console.error('Error inesperado en el registro', error)
+                return res.status(500).json(
+                    {
+                        ok: false,
+                        status: 500,
+                        message: "Internal server error"
+                    }
+                )
+            }
+        }
+    }
 }
 
 const channelController = new ChannelController()
