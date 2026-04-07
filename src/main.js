@@ -7,6 +7,7 @@ import cors from 'cors'
 import authMiddleware from "./middlewares/authMiddleware.js"
 import workspaceRouter from "./routes/workspace.router.js"
 import memberWorkspaceRouter from "./routes/member.router.js";
+import channelRouter from "./routes/channel.router.js";
 
 
 connectMongoDB()
@@ -27,6 +28,7 @@ app.use('/api/health', healthRouter)
 app.use('/api/auth', authRouter)
 app.use('/api/workspace', workspaceRouter)
 app.use('/api/membersWorkspace', memberWorkspaceRouter)
+app.use('/api/channel', channelRouter)
 
 app.get(
     '/api/test', 
