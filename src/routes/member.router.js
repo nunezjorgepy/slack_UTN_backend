@@ -1,7 +1,7 @@
 import { Router } from "express";
 import authMiddleware from "../middlewares/authMiddleware.js";
 import memberWorkspaceController from "../controllers/member.controller.js";
-import checkOwnerMiddleware from "../middlewares/checkOwnerMiddleware.js";
+import verifyMemberWorkspaceMiddleware from "../middlewares/verifyMemberWorkspaceMiddleware.js";
 
 
 const memberWorkspaceRouter = Router()
@@ -21,7 +21,7 @@ memberWorkspaceRouter.get(
 memberWorkspaceRouter.post(
     '/:workspace_id/add',
     authMiddleware,
-    checkOwnerMiddleware,
+    verifyMemberWorkspaceMiddleware(['owner']),
     memberWorkspaceController.addMember
 )
 

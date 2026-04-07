@@ -7,7 +7,6 @@ Para saber que espacios de trabajo traer NECESITAMOS EL ID DEL USUARIO
 import {Router} from 'express'
 import workspaceController from '../controllers/workspace.controller.js'
 import authMiddleware from '../middlewares/authMiddleware.js'
-import checkOwnerMiddleware from '../middlewares/checkOwnerMiddleware.js'
 import verifyMemberWorkspaceMiddleware from '../middlewares/verifyMemberWorkspaceMiddleware.js'
 import verifyWorkspaceMiddleware from '../middlewares/verifyWorkspaceMiddleware.js'
 
