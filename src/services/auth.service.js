@@ -128,10 +128,25 @@ class AuthService {
                 to: email,
                 subject: `Bienvenido ${name} verifica tu correo electronico`,
                 html: `
-                    <h1>Bienvenido ${name}</h1>
-                    <p>Te has registrado correctamente, necesitamos verificar tu correo electronico</p>
-                    <a href="${ENVIRONMENT.URL_FRONTEND + `/verify-email?verify_email_token=${verify_email_token}`}">Click aqui para verificar (Link al Frontend)</a>
-                    <span>Si no reconoces este registro desestima este mail.</span>
+                <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #611f69; border-radius: 16px;">
+                    <div style="background-color: #ffffff; padding: 40px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); text-align: center;">
+                        <h1 style="color: #111827; font-size: 24px; font-weight: 600; margin-bottom: 16px; margin-top: 0;">¡Bienvenido, ${name}!</h1>
+                        <p style="color: #4b5563; font-size: 16px; line-height: 24px; margin-bottom: 32px;">
+                            Te has registrado correctamente. Para poder comenzar, necesitamos verificar tu dirección de correo electrónico haciendo clic en el siguiente botón:
+                        </p>
+                        <a href="${ENVIRONMENT.URL_FRONTEND + `/verify-email?verify_email_token=${verify_email_token}`}" 
+                           style="display: inline-block; background-color: #611f69; color: #ffffff; font-size: 16px; font-weight: 500; text-decoration: none; padding: 12px 24px; border-radius: 6px; margin-bottom: 24px;">
+                            Verificar mi correo
+                        </a>
+                        <p style="color: #9ca3af; font-size: 13px; line-height: 20px; margin-top: 32px; border-top: 1px solid #e5e7eb; padding-top: 24px;">
+                            Si el botón superior no funciona, copia y pega este enlace en tu navegador:<br>
+                            <a href="${ENVIRONMENT.URL_FRONTEND + `/verify-email?verify_email_token=${verify_email_token}`}" style="color: #611f69; word-break: break-all;">${ENVIRONMENT.URL_FRONTEND + `/verify-email?verify_email_token=${verify_email_token}`}</a>
+                        </p>
+                        <p style="color: #9ca3af; font-size: 12px; margin-top: 16px;">
+                            Si no reconoces este registro, puedes desestimar de forma segura este correo.
+                        </p>
+                    </div>
+                </div>
                 `
             }
         )
@@ -163,10 +178,25 @@ class AuthService {
                 to: email,
                 subject: "Restablecimiento de contraseña",
                 html: `
-                    <h1> Restablecimiento de contraseña</h1>
-                    <p>Has solicitado restablecer tu contraseña. Haz clic en el enlace para hacerlo</p>
-                    <a href="${ENVIRONMENT.URL_FRONTEND + `/reset-password/${reset_password_token}`}">Click aqui para restablecer</a>
-                    <span>Si no reconoces este registro, desestima este mail.</span>
+                <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #611f69; border-radius: 16px;">
+                    <div style="background-color: #ffffff; padding: 40px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); text-align: center;">
+                        <h1 style="color: #111827; font-size: 24px; font-weight: 600; margin-bottom: 16px; margin-top: 0;">Restablecimiento de contraseña</h1>
+                        <p style="color: #4b5563; font-size: 16px; line-height: 24px; margin-bottom: 32px;">
+                            Hemos recibido una solicitud para restablecer la contraseña de tu cuenta. Haz clic en el botón de abajo para elegir una nueva contraseña:
+                        </p>
+                        <a href="${ENVIRONMENT.URL_FRONTEND + `/reset-password/${reset_password_token}`}" 
+                           style="display: inline-block; background-color: #611f69; color: #ffffff; font-size: 16px; font-weight: 500; text-decoration: none; padding: 12px 24px; border-radius: 6px; margin-bottom: 24px;">
+                            Restablecer contraseña
+                        </a>
+                        <p style="color: #9ca3af; font-size: 13px; line-height: 20px; margin-top: 32px; border-top: 1px solid #e5e7eb; padding-top: 24px;">
+                            Si el botón superior no funciona, copia y pega este enlace en tu navegador:<br>
+                            <a href="${ENVIRONMENT.URL_FRONTEND + `/reset-password/${reset_password_token}`}" style="color: #611f69; word-break: break-all;">${ENVIRONMENT.URL_FRONTEND + `/reset-password/${reset_password_token}`}</a>
+                        </p>
+                        <p style="color: #9ca3af; font-size: 12px; margin-top: 16px;">
+                            Si no has solicitado este cambio, por favor ignora este correo. Tu contraseña seguirá siendo la misma.
+                        </p>
+                    </div>
+                </div>
                 `
             })
         } catch (error) {
