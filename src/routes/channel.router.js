@@ -31,10 +31,7 @@ channelRouter.get(
     authMiddleware,
     verifyWorkspaceMiddleware,
     verifyMemberWorkspaceMiddleware(),
-    /* channelController.getAll */
-    (req, res) => {
-        res.send('Getting all channels')
-    }
+    channelController.getAll
 )
 
 channelRouter.get(

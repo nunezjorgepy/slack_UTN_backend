@@ -43,6 +43,45 @@ class ChannelController {
             }
         }
     }   
+
+    async getAll(req, res) {
+        try {
+            const workspace = req.workspace
+            const channels = await channelService.getAll(workspace._id)
+            
+            res.status(200).json(
+                {
+                    ok: true,
+                    status: 200,
+                    message: 'Canales obtenidos exitosamente',
+                    data: {
+                        channels
+                    }
+                }
+            )
+        } catch (error) {
+            //Errores esperables en el sistema
+            if (error instanceof ServerError) {
+                return res.status(error.status).json(
+                    {
+                        ok: false,
+                        status: error.status,
+                        message: error.message
+                    }
+                )
+            }
+            else {
+                console.error('Error inesperado en el registro', error)
+                return res.status(500).json(
+                    {
+                        ok: false,
+                        status: 500,
+                        message: "Internal server error"
+                    }
+                )
+            }
+        }
+    }
 }
 
 const channelController = new ChannelController()
