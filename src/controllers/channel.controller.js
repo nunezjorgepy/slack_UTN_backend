@@ -82,6 +82,46 @@ class ChannelController {
             }
         }
     }
+
+    async getById(req, res) {
+        try {
+            const workspace = req.workspace
+            // TODO: cambiar la forma en la que se obtiene el canal a req.channel (después de crear el middleware)
+            const channel = await channelService.getById(workspace._id, req.params.channel_id)
+            
+            res.status(200).json(
+                {
+                    ok: true,
+                    status: 200,
+                    message: 'Canal obtenido exitosamente',
+                    data: {
+                        channel
+                    }
+                }
+            )
+        } catch (error) {
+            //Errores esperables en el sistema
+            if (error instanceof ServerError) {
+                return res.status(error.status).json(
+                    {
+                        ok: false,
+                        status: error.status,
+                        message: error.message
+                    }
+                )
+            }
+            else {
+                console.error('Error inesperado en el registro', error)
+                return res.status(500).json(
+                    {
+                        ok: false,
+                        status: 500,
+                        message: "Internal server error"
+                    }
+                )
+            }
+        }
+    }
 }
 
 const channelController = new ChannelController()

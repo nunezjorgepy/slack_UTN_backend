@@ -39,10 +39,7 @@ channelRouter.get(
     authMiddleware,
     verifyWorkspaceMiddleware,
     verifyMemberWorkspaceMiddleware(),
-    /* channelController.getById */
-    (req, res) => {
-        res.send('Getting channel by id')
-    }
+    channelController.getById
 )
 
 channelRouter.delete(
