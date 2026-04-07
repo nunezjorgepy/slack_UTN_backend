@@ -15,6 +15,7 @@ import channelController from '../controllers/channel.controller.js'
 import authMiddleware from '../middlewares/authMiddleware.js'
 import verifyWorkspaceMiddleware from '../middlewares/verifyWorkspaceMiddleware.js'
 import verifyMemberWorkspaceMiddleware from '../middlewares/verifyMemberWorkspaceMiddleware.js'
+import verifyChannelMiddleware from '../middlewares/verifyChannelMiddleware.js'
 
 const channelRouter = Router()
 
@@ -39,7 +40,9 @@ channelRouter.get(
     authMiddleware,
     verifyWorkspaceMiddleware,
     verifyMemberWorkspaceMiddleware(),
+    verifyChannelMiddleware,
     channelController.getById
+    // TODO: preguntar si, como ya consigo el channel en el middleware, hace falta la función del controller
 )
 
 channelRouter.delete(
@@ -47,6 +50,7 @@ channelRouter.delete(
     authMiddleware,
     verifyWorkspaceMiddleware,
     verifyMemberWorkspaceMiddleware(['owner', 'admin']),
+    verifyChannelMiddleware,
     channelController.softDelete
 )
 

@@ -125,9 +125,9 @@ class ChannelController {
 
     async softDelete(req, res) {
         try {
-            const workspace = req.workspace
-            // TODO: cambiar la forma en la que se obtiene el canal a req.channel (después de crear el middleware)
-            const channel = await channelService.softDelete(workspace._id, req.params.channel_id)
+            const { workspace, channel } = req
+            
+            const channel_found = await channelService.softDelete(workspace._id, channel.channel_id)
             
             res.status(200).json(
                 {
@@ -135,7 +135,7 @@ class ChannelController {
                     status: 200,
                     message: 'Canal eliminado exitosamente',
                     data: {
-                        channel
+                        channel: channel_found
                     }
                 }
             )

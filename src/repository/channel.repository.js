@@ -36,8 +36,8 @@ class ChannelRepository {
         return normalizedChannels
     }
 
-    async getById(workspace_id, channel_id) {
-        const channel = await ChannelModel.findOne({ fk_id_workspace: workspace_id, _id: channel_id })
+    async getById(channel_id) {
+        const channel = await ChannelModel.findOne({ _id: channel_id })
 
         // Normalizo el canal
         const normalizedChannel = {
