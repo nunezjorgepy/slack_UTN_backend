@@ -47,8 +47,8 @@ class ChannelRepository {
     }
 
     async delete(channel_id) {
-        const channel = await ChannelModel.findOneAndDelete(
-            { fk_id_workspace: workspace_id, _id: channel_id }
+        const channel = await ChannelModel.findByIdAndDelete(
+            channel_id
         )
 
         // Normalizo el canal
