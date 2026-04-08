@@ -1,13 +1,3 @@
-/* 
-Creo los enpoints para los canales:
-    - POST /:workspace_id/channel
-    - GET /:workspace_id/channels
-    - GET /:workspace_id/channel/:channel_id
-    - DELETE /:workspace_id/channel/:channel_id
-
-Opcional: un PUT /:workspace_id/channel/:channel_id para editar el canal.
-*/
-
 import {Router} from 'express'
 import channelController from '../controllers/channel.controller.js'
 
@@ -17,10 +7,10 @@ import verifyWorkspaceMiddleware from '../middlewares/verifyWorkspaceMiddleware.
 import verifyMemberWorkspaceMiddleware from '../middlewares/verifyMemberWorkspaceMiddleware.js'
 import verifyChannelMiddleware from '../middlewares/verifyChannelMiddleware.js'
 
-const channelRouter = Router()
+const channelRouter = Router({mergeParams: true})
 
 channelRouter.post(
-    '/:workspace_id/channel',
+    '/',
     authMiddleware,
     verifyWorkspaceMiddleware,
     verifyMemberWorkspaceMiddleware(['owner', 'admin']),
@@ -28,7 +18,7 @@ channelRouter.post(
 )
 
 channelRouter.get(
-    '/:workspace_id/channels',
+    '/',
     authMiddleware,
     verifyWorkspaceMiddleware,
     verifyMemberWorkspaceMiddleware(),
@@ -36,7 +26,7 @@ channelRouter.get(
 )
 
 channelRouter.get(
-    '/:workspace_id/channel/:channel_id',
+    '/:channel_id',
     authMiddleware,
     verifyWorkspaceMiddleware,
     verifyMemberWorkspaceMiddleware(),
@@ -46,7 +36,7 @@ channelRouter.get(
 )
 
 channelRouter.delete(
-    '/:workspace_id/channel/soft-delete/:channel_id',
+    '/soft-delete/:channel_id',
     authMiddleware,
     verifyWorkspaceMiddleware,
     verifyMemberWorkspaceMiddleware(['owner', 'admin']),
@@ -55,7 +45,7 @@ channelRouter.delete(
 )
 
 channelRouter.delete(
-    '/:workspace_id/channel/delete/:channel_id',
+    '/delete/:channel_id',
     authMiddleware,
     verifyWorkspaceMiddleware,
     verifyMemberWorkspaceMiddleware(['owner', 'admin']),

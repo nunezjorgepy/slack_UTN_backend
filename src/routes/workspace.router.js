@@ -9,6 +9,7 @@ import workspaceController from '../controllers/workspace.controller.js'
 import authMiddleware from '../middlewares/authMiddleware.js'
 import verifyMemberWorkspaceMiddleware from '../middlewares/verifyMemberWorkspaceMiddleware.js'
 import verifyWorkspaceMiddleware from '../middlewares/verifyWorkspaceMiddleware.js'
+import channelRouter from './channel.router.js'
 
 const workspaceRouter = Router()
 
@@ -54,6 +55,9 @@ workspaceRouter.delete(
     workspaceController.softDelete
 )
 
-
+workspaceRouter.use(
+    '/:workspace_id/channel', 
+    channelRouter
+)
 
 export default workspaceRouter

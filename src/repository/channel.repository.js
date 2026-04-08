@@ -10,6 +10,7 @@ class ChannelRepository {
         })
 
         // Normalizo el canal
+        // TODO: sacar las normalizaciones
         const normalized_channel = {
             channel_id: channel._id,
             channel_name: channel.name,
