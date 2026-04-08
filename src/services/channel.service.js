@@ -48,7 +48,7 @@ class ChannelService {
         }
 
         try {
-            const channel = await channelRepository.softDelete(workspace_id, channel_id)
+            const channel = await channelRepository.softDelete(channel_id)
             return channel
         } catch (error) {
             throw error
@@ -61,7 +61,7 @@ class ChannelService {
         }
 
         try {
-            const channel = await channelRepository.delete(workspace_id, channel_id)
+            const channel = await channelRepository.delete(channel_id)
             return channel
         } catch (error) {
             throw error

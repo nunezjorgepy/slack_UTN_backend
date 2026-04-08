@@ -27,16 +27,16 @@ class ChannelRepository {
     }
 
     async getById(channel_id) {
-        const channel = await ChannelModel.findOne({ _id: channel_id })
+        const channel = await ChannelModel.findById(channel_id)
 
         // Normalizo el canal, solamente si existe
         const normalized_channel = channel && new ChannelDTO(channel)
         return normalized_channel
     }
 
-    async softDelete(workspace_id, channel_id) {
-        const channel = await ChannelModel.findOneAndUpdate(
-            { fk_id_workspace: workspace_id, _id: channel_id },
+    async softDelete(channel_id) {
+        const channel = await ChannelModel.findByIdAndUpdate(
+            channel_id,
             { is_active: false },
             { returnDocument: 'after' }
         )
@@ -46,7 +46,7 @@ class ChannelRepository {
         return normalized_channel
     }
 
-    async delete(workspace_id, channel_id) {
+    async delete(channel_id) {
         const channel = await ChannelModel.findOneAndDelete(
             { fk_id_workspace: workspace_id, _id: channel_id }
         )
