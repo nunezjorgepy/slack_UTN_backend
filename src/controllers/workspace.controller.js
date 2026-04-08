@@ -1,9 +1,10 @@
 import ServerError from "../helpers/error.helper.js"
+import channelRepository from "../repository/channel.repository.js"
 import workspaceMemberRepository from "../repository/member.repository.js"
 import workspaceService from "../services/workspace.service.js"
 
 class WorkspaceController {
-        async create(req, res) {
+    async create(req, res) {
         try {
             const { title, description = '', url_image = '' } = req.body
             const user = req.user
@@ -58,6 +59,8 @@ class WorkspaceController {
         try {
             const workspace = await workspaceService.getById(workspace_id)
             const members = await workspaceMemberRepository.getMemberList(workspace_id)
+            const channels = await channelRepository.getAll(workspace_id)
+
             res.json(
                 {
                     ok: true,
@@ -65,7 +68,8 @@ class WorkspaceController {
                     message: 'Espacio de trabajo obtenido',
                     data: {
                         workspace,
-                        members
+                        members,
+                        channels
                     }
                 }
             )
