@@ -1,3 +1,4 @@
+import ChannelDTO from "../dto/channel.dto.js"
 import ChannelModel from "../models/channel.model.js"
 
 
@@ -11,13 +12,7 @@ class ChannelRepository {
 
         // Normalizo el canal
         // TODO: sacar las normalizaciones
-        const normalized_channel = {
-            channel_id: channel._id,
-            channel_name: channel.name,
-            channel_description: channel.description,
-            workspace_id: channel.fk_id_workspace,
-            channel_is_active: channel.is_active
-        }
+        const normalized_channel = new ChannelDTO(channel)
         return normalized_channel
     }
 
@@ -26,13 +21,7 @@ class ChannelRepository {
 
         // Normalizo los canales
         const normalizedChannels = channels.map(channel => {
-            return {
-                channel_id: channel._id,
-                channel_name: channel.name,
-                channel_description: channel.description,
-                workspace_id: channel.fk_id_workspace,
-                channel_is_active: channel.is_active
-            }
+            return new ChannelDTO(channel)
         })
         return normalizedChannels
     }
@@ -41,14 +30,7 @@ class ChannelRepository {
         const channel = await ChannelModel.findOne({ _id: channel_id })
 
         // Normalizo el canal, solamente si existe
-        const normalized_channel = channel &&
-            {
-                channel_id: channel._id,
-                channel_name: channel.name,
-                channel_description: channel.description,
-                workspace_id: channel.fk_id_workspace,
-                channel_is_active: channel.is_active
-            }
+        const normalized_channel = channel && new ChannelDTO(channel)
         return normalized_channel
     }
 
@@ -60,14 +42,7 @@ class ChannelRepository {
         )
 
         // Normalizo el canal
-        const normalized_channel = channel &&
-            {
-                channel_id: channel._id,
-                channel_name: channel.name,
-                channel_description: channel.description,
-                workspace_id: channel.fk_id_workspace,
-                channel_is_active: channel.is_active
-            }
+        const normalized_channel = channel && new ChannelDTO(channel)
         return normalized_channel
     }
 
@@ -77,14 +52,7 @@ class ChannelRepository {
         )
 
         // Normalizo el canal
-        const normalized_channel = channel &&
-            {
-                channel_id: channel._id,
-                channel_name: channel.name,
-                channel_description: channel.description,
-                workspace_id: channel.fk_id_workspace,
-                channel_is_active: channel.is_active
-            }
+        const normalized_channel = channel && new ChannelDTO(channel)
         return normalized_channel
     }
 }
