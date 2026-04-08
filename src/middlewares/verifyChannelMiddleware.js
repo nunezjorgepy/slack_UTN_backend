@@ -20,7 +20,6 @@ async function verifyChannelMiddleware(req, res, next) {
         if (!channel) {
             throw new ServerError('El canal no existe', 404)
         }
-        console.log(channel)
         
         if (channel.channel_workspace_id.toString() !== workspace_id.toString()) {
             throw new ServerError('El canal no pertenece al espacio de trabajo', 403)

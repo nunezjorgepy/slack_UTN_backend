@@ -8,12 +8,9 @@ class ChannelService {
             throw new ServerError("Faltan campos obligatorios", 400)
         }
 
-        try {
-            const channel = await channelRepository.create(workspace_id, name, description)
-            return channel
-        } catch (error) {
-            throw error
-        }
+        const channel = await channelRepository.create(workspace_id, name, description)
+        return channel
+
     }
 
     async getAll(workspace_id) {
@@ -21,12 +18,9 @@ class ChannelService {
             throw new ServerError("Faltan campos obligatorios", 400)
         }
 
-        try {
-            const channels = await channelRepository.getAll(workspace_id)
-            return channels
-        } catch (error) {
-            throw error
-        }
+        const channels = await channelRepository.getAll(workspace_id)
+        return channels
+
     }
 
     async getById(workspace_id, channel_id) {
@@ -34,12 +28,9 @@ class ChannelService {
             throw new ServerError("Faltan campos obligatorios", 400)
         }
 
-        try {
-            const channel = await channelRepository.getById(channel_id)
-            return channel
-        } catch (error) {
-            throw error
-        }
+        const channel = await channelRepository.getById(channel_id)
+        return channel
+
     }
 
     async softDelete(workspace_id, channel_id) {
@@ -47,12 +38,9 @@ class ChannelService {
             throw new ServerError("Faltan campos obligatorios", 400)
         }
 
-        try {
-            const channel = await channelRepository.softDelete(channel_id)
-            return channel
-        } catch (error) {
-            throw error
-        }
+        const channel = await channelRepository.softDelete(channel_id)
+        return channel
+
     }
 
     async delete(workspace_id, channel_id) {
@@ -60,12 +48,9 @@ class ChannelService {
             throw new ServerError("Faltan campos obligatorios", 400)
         }
 
-        try {
-            const channel = await channelRepository.delete(channel_id)
-            return channel
-        } catch (error) {
-            throw error
-        }
+        const channel = await channelRepository.delete(channel_id)
+        return channel
+
     }
 }
 

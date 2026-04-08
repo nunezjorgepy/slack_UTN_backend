@@ -86,7 +86,6 @@ class ChannelController {
     async getById(req, res) {
         try {
             const { workspace, channel } = req
-            console.log(workspace)
             // TODO: cambiar la forma en la que se obtiene el canal a req.channel (después de crear el middleware)
             const channel_found = await channelService.getById(workspace._id, channel.channel_id)
             
