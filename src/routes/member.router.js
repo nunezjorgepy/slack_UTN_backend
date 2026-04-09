@@ -15,10 +15,7 @@ memberWorkspaceRouter.post(
     authMiddleware,
     verifyWorkspaceMiddleware,
     verifyMemberWorkspaceMiddleware(['owner', 'admin']),
-    /* memberWorkspaceController.inviteMember */
-    (req, res) => {
-        res.send('Desde esta ruta se puede invitar miembros')
-    }
+    memberWorkspaceController.inviteMember
 )
 
 /* 

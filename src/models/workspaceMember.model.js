@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import ROLE_CONSTANTS from "../constants/roles.constants.js";
+import INVITATION_CONSTANTS from "../constants/invitation.constants.js";
 
 const workspaceMemberSchema = new mongoose.Schema({
     fk_id_user: {
@@ -13,12 +15,13 @@ const workspaceMemberSchema = new mongoose.Schema({
     },
     role: {
         type: String,
-        enum: [
-            'owner',
-            'admin',
-            'user'
-        ],
-        default: "user"
+        enum: ROLE_CONSTANTS,
+        default: ROLE_CONSTANTS.USER
+    },
+    acceptInvitation: {
+        type: String,
+        enum: INVITATION_CONSTANTS,
+        default: INVITATION_CONSTANTS.PENDING
     },
     isActive: {
         type: Boolean,

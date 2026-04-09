@@ -9,11 +9,20 @@ WorkspaceMemberRepository
 
 import WorkspaceMember from "../models/workspaceMember.model.js"
 class WorkspaceMemberRepository {
-    async create(fk_id_user, fk_id_workspace, role) {
+    async create(fk_id_user, fk_id_workspace, role, acceptInvitation) {
+        /**
+         * Descripción: Crea un nuevo miembro del espacio de trabajo
+         * @param {string} fk_id_user - ID del usuario
+         * @param {string} fk_id_workspace - ID del espacio de trabajo
+         * @param {string} role - Rol del usuario
+         * @param {string} acceptInvitation - Estado de la invitación
+         * @returns {Object} - Objeto con los datos del nuevo miembro
+         */
         return await WorkspaceMember.create({
             fk_id_user: fk_id_user,
             fk_id_workspace: fk_id_workspace,
-            role: role
+            role: role,
+            acceptInvitation: role === 'owner' ? undefined : acceptInvitation
         })
     }
 
@@ -107,9 +116,28 @@ class WorkspaceMemberRepository {
     async deleteById(workspace_member_id) {
         await WorkspaceMember.findByIdAndDelete(workspace_member_id)
     }
+
     async getById(workspace_member_id) {
         await WorkspaceMember.findById(workspace_member_id)
     }
+
+    async checkInvitationStatus(fk_id_user, fk_id_workspace, acceptInvitation) {
+        /**
+         * Consigue un usuario por id de usuario y id de espacio de trabajo
+         * @param {string} fk_id_user - Identificador en mongoDB del usuario
+         * @param {string} fk_id_workspace - Identificador en mongoDB del espacio de trabajo
+         * @param {string} acceptInvitation - Estado de la invitación
+         * @returns {Object} Objeto con los datos del usuario
+         */
+        return await WorkspaceMember.findOne(
+            {
+                fk_id_user,
+                fk_id_workspace,
+                acceptInvitation
+            }
+        )
+    }
+
     async getUserById(fk_id_user, fk_id_workspace) {
         /**
          * Consigue un usuario por id de usuario y id de espacio de trabajo
@@ -124,6 +152,7 @@ class WorkspaceMemberRepository {
             }
         )
     }
+
     async updateRoleById(member_id, role) {
         const new_workspace_member = await WorkspaceMember.findByIdAndUpdate(
             member_id,

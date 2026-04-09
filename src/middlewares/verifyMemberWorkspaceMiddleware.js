@@ -4,6 +4,10 @@ import mongoose from "mongoose"
 
 
 function verifyMemberWorkspaceMiddleware(valid_roles = []) {
+    /**
+     * @param {Array<String>} valid_roles - Roles válidos para acceder al recurso
+     * @returns {Function} - Middleware que verifica si el usuario es miembro del workspace
+     */
     return async function (req, res, next) {
         const { user, workspace } = req
 
