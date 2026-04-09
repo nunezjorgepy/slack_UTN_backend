@@ -18,6 +18,18 @@ memberWorkspaceRouter.post(
     memberWorkspaceController.inviteMember
 )
 
+memberWorkspaceRouter.post(
+    '/response-to-invitation',
+    authMiddleware,
+    verifyWorkspaceMiddleware,      // Este es necesario porque si el owner llegó a eliminar el espacio de trabajo, no se podrá responder a la invitación
+    /* memberWorkspaceController.responseToInvitation */
+    (req, res) => {
+        console.log("llega")
+        console.log(req.user)
+        res.status(200).send("ok")
+    }
+)
+
 /* 
 TODO DELETE: eliminar si todo funciona como corresponde
 memberWorkspaceRouter.get(
