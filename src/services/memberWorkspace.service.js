@@ -15,6 +15,7 @@ class MemberWorkspaceService {
     }
 
     async findOwnerByUserAndWorkspaceId(user, workspace_id){
+        // TODO: verificar si se usa en algún otro lado. Caso contrario, eliminar.
         if(!user || !workspace_id) {
             throw new ServerError("Todos los campos son obligatorios", 404)
         }

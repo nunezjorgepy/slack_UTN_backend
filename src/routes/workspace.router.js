@@ -22,7 +22,7 @@ workspaceRouter.get(
 workspaceRouter.get(
     '/active',
     authMiddleware,
-    workspaceController.getOnlyActive
+    workspaceController.getActiveByUserID
 )
 
 workspaceRouter.get(

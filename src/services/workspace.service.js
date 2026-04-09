@@ -42,8 +42,11 @@ class WorkscapeService {
 
     }
 
-    async getOnlyActive() {
-        return await workspaceRepository.getOnlyActive()
+    async getActiveByUserID(user_id) {
+        if (!user_id) {
+            throw new ServerError("Debe proporcionar un id", 400)
+        }
+        return await workspaceRepository.getActiveByUserID(user_id)
     }
 
     async edit( workspace_id, title, description, url_image ) {

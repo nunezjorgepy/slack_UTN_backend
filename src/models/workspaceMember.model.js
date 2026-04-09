@@ -1,9 +1,3 @@
-/* 
-fk_id_workspace
-fk_id_user
-role
-*/
-
 import mongoose from "mongoose";
 
 const workspaceMemberSchema = new mongoose.Schema({

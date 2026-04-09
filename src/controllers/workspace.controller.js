@@ -137,9 +137,11 @@ class WorkspaceController {
         }
     }
 
-    async getOnlyActive(req, res) {
+    async getActiveByUserID(req, res) {
         try {
-            const workspaces = await workspaceService.getOnlyActive()
+            const user = req.user
+            const workspaces = await workspaceService.getActiveByUserID(user.id)
+            console.log(workspaces)
             res.json(
                 {
                     ok: true,
