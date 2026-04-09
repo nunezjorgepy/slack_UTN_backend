@@ -146,17 +146,19 @@ class MemberWorkspaceController {
 
     async inviteMember(req, res) {
         const { email, role } = req.body
-        const fk_id_workspace = req.workspace._id
+        const workspace = req.workspace
+        const member_email = req.user.email
         
         try {
-            if(!email || !fk_id_workspace || !role) {
+            if(!email || !workspace || !role) {
                 throw new ServerError('Todos los campos son obligatorios', 400)
             }
 
             const newMember = await memberWorkspaceService.inviteMember(
                 email,
-                fk_id_workspace,
-                role
+                workspace,
+                role,
+                member_email
             )
             
             res.status(200).json(

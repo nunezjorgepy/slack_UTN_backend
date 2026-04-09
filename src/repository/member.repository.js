@@ -1,12 +1,3 @@
-/* 
-WorkspaceMemberRepository
-    - create (fk_id_user, fk_id_workspace, role)
-    - updateRole(id_member, role)
-    - delete(id_member)
-    - getMemberList(workspace_id) //Obtiene lista de miembros relacionados a ese espacio de trabajo
-*/
-
-
 import WorkspaceMember from "../models/workspaceMember.model.js"
 class WorkspaceMemberRepository {
     async create(fk_id_user, fk_id_workspace, role, acceptInvitation) {
@@ -154,6 +145,12 @@ class WorkspaceMemberRepository {
     }
 
     async updateRoleById(member_id, role) {
+        /**
+         * Descripción: Actualiza el rol de un miembro del espacio de trabajo
+         * @param {string} member_id - ID del miembro
+         * @param {string} role - Rol del miembro
+         * @returns {Object} - Objeto con los datos del nuevo miembro
+         */
         const new_workspace_member = await WorkspaceMember.findByIdAndUpdate(
             member_id,
             {role: role},
@@ -162,6 +159,7 @@ class WorkspaceMemberRepository {
         return new_workspace_member
     }
 
+    // Se usa en el servicio de workspace
     async getMemberList(fk_id_workspace) {
         /**
          * Descripción: Obtiene la lista de miembros de un espacio de trabajo
