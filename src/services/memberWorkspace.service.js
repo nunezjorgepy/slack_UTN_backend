@@ -155,10 +155,34 @@ class MemberWorkspaceService {
             subject: `Invitación a ${workspace_title}`,
             text: `Hola ${email}, has sido invitado a unirte al espacio de trabajo ${workspace_title}. Haz clic en el enlace para aceptar o rechazar la invitación.`,
             html: `
-                <h1>Invitación a ${workspace_title}</h1>
-                <p>Hola ${email}, has sido invitado a unirte al espacio de trabajo ${workspace_title}. Haz clic en el enlace para aceptar o rechazar la invitación:</p>
-                <a href="${ENVIRONMENT.URL_FRONTEND}/response-to-invitation?token=${accept_invitation_token}">Aceptar invitación</a>
-                <a href="${ENVIRONMENT.URL_FRONTEND}/response-to-invitation?token=${reject_invitation_token}">Rechazar invitación</a>
+            <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #611f69; border-radius: 16px;">
+                <div style="background-color: #ffffff; padding: 40px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); text-align: center;">
+                    <h1 style="color: #111827; font-size: 24px; font-weight: 600; margin-bottom: 16px; margin-top: 0;">Invitación a ${workspace_title}</h1>
+                    <p style="color: #4b5563; font-size: 16px; line-height: 24px; margin-bottom: 32px;">
+                        Hola <strong>${email}</strong>, has sido invitado a unirte al espacio de trabajo <strong>${workspace_title}</strong>. Puedes aceptar o rechazar esta invitación utilizando los siguientes botones:
+                    </p>
+                    <div style="margin-bottom: 24px; text-align: center;">
+                        <a href="${ENVIRONMENT.URL_FRONTEND}/response-to-invitation?token=${accept_invitation_token}" 
+                           style="display: inline-block; background-color: #611f69; color: #ffffff; font-size: 16px; font-weight: 500; text-decoration: none; padding: 12px 24px; border-radius: 6px; margin: 8px 10px;">
+                            Aceptar invitación
+                        </a>
+                        <a href="${ENVIRONMENT.URL_FRONTEND}/response-to-invitation?token=${reject_invitation_token}" 
+                           style="display: inline-block; background-color: #ef4444; color: #ffffff; font-size: 16px; font-weight: 500; text-decoration: none; padding: 12px 24px; border-radius: 6px; margin: 8px 10px;">
+                            Rechazar invitación
+                        </a>
+                    </div>
+                    <p style="color: #9ca3af; font-size: 13px; line-height: 20px; margin-top: 32px; border-top: 1px solid #e5e7eb; padding-top: 24px;">
+                        Si los botones no funcionan, puedes usar los siguientes enlaces en tu navegador:<br><br>
+                        <strong>Para aceptar:</strong><br>
+                        <a href="${ENVIRONMENT.URL_FRONTEND}/response-to-invitation?token=${accept_invitation_token}" style="color: #611f69; word-break: break-all;">${ENVIRONMENT.URL_FRONTEND}/response-to-invitation?token=${accept_invitation_token}</a><br><br>
+                        <strong>Para rechazar:</strong><br>
+                        <a href="${ENVIRONMENT.URL_FRONTEND}/response-to-invitation?token=${reject_invitation_token}" style="color: #ef4444; word-break: break-all;">${ENVIRONMENT.URL_FRONTEND}/response-to-invitation?token=${reject_invitation_token}</a>
+                    </p>
+                    <p style="color: #9ca3af; font-size: 12px; margin-top: 16px;">
+                        Si no esperabas esta invitación o no conoces este espacio de trabajo, puedes ignorar o rechazar este correo de forma segura.
+                    </p>
+                </div>
+            </div>
             `
         })
     }
