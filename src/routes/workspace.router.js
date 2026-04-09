@@ -10,6 +10,7 @@ import authMiddleware from '../middlewares/authMiddleware.js'
 import verifyMemberWorkspaceMiddleware from '../middlewares/verifyMemberWorkspaceMiddleware.js'
 import verifyWorkspaceMiddleware from '../middlewares/verifyWorkspaceMiddleware.js'
 import channelRouter from './channel.router.js'
+import memberWorkspaceRouter from './member.router.js'
 
 const workspaceRouter = Router()
 
@@ -58,6 +59,11 @@ workspaceRouter.delete(
 workspaceRouter.use(
     '/:workspace_id/channel', 
     channelRouter
+)
+
+workspaceRouter.use(
+    '/:workspace_id/member', 
+    memberWorkspaceRouter
 )
 
 export default workspaceRouter
