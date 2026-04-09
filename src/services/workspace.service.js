@@ -10,18 +10,14 @@ class WorkscapeService {
         if (!user || !title) {
             throw new ServerError("Todos los campos son obligatorios", 400)
         }
-        try {
-            const workspace_created = await workspaceRepository.create(title, description, url_image)
-            await memberWorkspaceService.create(
-                user.id,
-                workspace_created._id,
-                'owner'
-            )
+        const workspace_created = await workspaceRepository.create(title, description, url_image)
+        await memberWorkspaceService.create(
+            user.id,
+            workspace_created._id,
+            'owner'
+        )
 
-            return workspace_created
-        } catch (error) {
-            throw error
-        }
+        return workspace_created
     }
 
     async getById(workspace_id) {
@@ -34,44 +30,33 @@ class WorkscapeService {
             throw new ServerError("Id de espacio de trabajo invalida", 400)
         }
 
-        try {
-            // Agregar la lista de miembros
-            const workspace = await workspaceRepository.getById(workspace_id)
+        // Agregar la lista de miembros
+        const workspace = await workspaceRepository.getById(workspace_id)
 
-            // Si el espacio no existe
-            if (!workspace) {
-                throw new ServerError("El espacio de trabajo no existe", 404)
-            }
-
-            return workspace
-        } catch (error) {
-            throw error
+        // Si el espacio no existe
+        if (!workspace) {
+            throw new ServerError("El espacio de trabajo no existe", 404)
         }
+
+        return workspace
+
     }
 
     async getOnlyActive() {
-        try {
-            return await workspaceRepository.getOnlyActive()
-        } catch (error) {
-            throw error
-        }
+        return await workspaceRepository.getOnlyActive()
     }
 
     async edit( workspace_id, title, description, url_image ) {
         if (!workspace_id || !title) {
             throw new ServerError("Todos los campos son obligatorios", 400)
         }
-        try {
-            return await workspaceRepository.edit(
-                workspace_id,
-                title,
-                description,
-                url_image
-            )
-            
-        } catch (error) {
-            throw error
-        }
+        return await workspaceRepository.edit(
+            workspace_id,
+            title,
+            description,
+            url_image
+        )
+
     }
 
     async softDelete(workspace_id) {
@@ -79,11 +64,7 @@ class WorkscapeService {
             throw new ServerError("Debe proporcionar un id", 400)
         }
 
-        try {
-            await workspaceRepository.softDelete(workspace_id)
-        } catch (error) {
-            throw error
-        }
+        await workspaceRepository.softDelete(workspace_id)
     }
 }
 

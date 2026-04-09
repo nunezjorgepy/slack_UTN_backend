@@ -42,46 +42,26 @@ class AuthService {
 
         //ESTO ES CLAVE
         //Gracias a esto sabremos si el token fue creado por nosotros
-        try {
-            const {email, name} = jwt.verify(verify_email_token, ENVIRONMENT.JWT_SECRET_KEY)
-            const user = await userRepository.getByEmail(email)
-            if(!user){
-                throw new ServerError('El usuario no existe', 404)
-            }
-            else if(user.email_verified){
-                throw new ServerError('Usuario con email ya validado', 400)
+        const {email, name} = jwt.verify(verify_email_token, ENVIRONMENT.JWT_SECRET_KEY)
+        const user = await userRepository.getByEmail(email)
+        if(!user){
+            throw new ServerError('El usuario no existe', 404)
+        }
+        else if(user.email_verified){
+            throw new ServerError('Usuario con email ya validado', 400)
+        }
+        else{
+            const user_updated = await userRepository.updateById(
+                user._id,
+                {email_verified: true}
+            )
+            if(!user_updated.email_verified){
+                throw new ServerError('Usuario no se pudo actualizar', 400)
             }
             else{
-                const user_updated = await userRepository.updateById(
-                    user._id,
-                    {email_verified: true}
-                )
-                if(!user_updated.email_verified){
-                    throw new ServerError('Usuario no se pudo actualizar', 400)
-                }
-                else{
-                    return user_updated
-                }
+                return user_updated
             }
         }
-        catch (error) {
-            if (error instanceof jwt.TokenExpiredError) {
-
-                //ESto nos permite leer el token pero no verificar firma
-                const {email, name} = jwt.decode(verify_email_token)
-                //Enviar otro mail de verificacion
-                await this.sendVerifyEmail({email, name})
-                throw new  ServerError('El token de verificacion expiro', 401)
-            }
-            else if(error instanceof jwt.JsonWebTokenError){
-                throw new ServerError('Token invalido', 401)
-            }
-            //SIno es error de JWT que el error siga el flujo normal
-            else{
-                throw error
-            }
-        }
-
     }
 
     async login({email, password}){
@@ -157,81 +137,61 @@ class AuthService {
         if (!email) {
             throw new ServerError("El email es obligatorio", 400)
         }
-        try {
-            const user = await userRepository.getByEmail(email);
-            if (!user) {
-                throw new ServerError("El usuario no existe", 404)
-            }
-    
-            const reset_password_token = jwt.sign(
-                {
-                    email
-                },
-                ENVIRONMENT.JWT_SECRET_KEY,
-                {
-                    expiresIn: "1d"
-                }
-            )
-    
-            await mailerTransporter.sendMail({
-                from: ENVIRONMENT.MAIL_USER,
-                to: email,
-                subject: "Restablecimiento de contraseña",
-                html: `
-                <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #611f69; border-radius: 16px;">
-                    <div style="background-color: #ffffff; padding: 40px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); text-align: center;">
-                        <h1 style="color: #111827; font-size: 24px; font-weight: 600; margin-bottom: 16px; margin-top: 0;">Restablecimiento de contraseña</h1>
-                        <p style="color: #4b5563; font-size: 16px; line-height: 24px; margin-bottom: 32px;">
-                            Hemos recibido una solicitud para restablecer la contraseña de tu cuenta. Haz clic en el botón de abajo para elegir una nueva contraseña:
-                        </p>
-                        <a href="${ENVIRONMENT.URL_FRONTEND + `/reset-password/${reset_password_token}`}" 
-                           style="display: inline-block; background-color: #611f69; color: #ffffff; font-size: 16px; font-weight: 500; text-decoration: none; padding: 12px 24px; border-radius: 6px; margin-bottom: 24px;">
-                            Restablecer contraseña
-                        </a>
-                        <p style="color: #9ca3af; font-size: 13px; line-height: 20px; margin-top: 32px; border-top: 1px solid #e5e7eb; padding-top: 24px;">
-                            Si el botón superior no funciona, copia y pega este enlace en tu navegador:<br>
-                            <a href="${ENVIRONMENT.URL_FRONTEND + `/reset-password/${reset_password_token}`}" style="color: #611f69; word-break: break-all;">${ENVIRONMENT.URL_FRONTEND + `/reset-password/${reset_password_token}`}</a>
-                        </p>
-                        <p style="color: #9ca3af; font-size: 12px; margin-top: 16px;">
-                            Si no has solicitado este cambio, por favor ignora este correo. Tu contraseña seguirá siendo la misma.
-                        </p>
-                    </div>
-                </div>
-                `
-            })
-        } catch (error) {
-            if (error instanceof ServerError) {
-                throw error
-            }
-            else {
-                throw new ServerError("Error al solicitar el restablecimiento de contraseña", 500)
-            }
+        const user = await userRepository.getByEmail(email);
+        if (!user) {
+            throw new ServerError("El usuario no existe", 404)
         }
+
+        const reset_password_token = jwt.sign(
+            {
+                email
+            },
+            ENVIRONMENT.JWT_SECRET_KEY,
+            {
+                expiresIn: "1d"
+            }
+        )
+
+        await mailerTransporter.sendMail({
+            from: ENVIRONMENT.MAIL_USER,
+            to: email,
+            subject: "Restablecimiento de contraseña",
+            html: `
+            <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #611f69; border-radius: 16px;">
+                <div style="background-color: #ffffff; padding: 40px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); text-align: center;">
+                    <h1 style="color: #111827; font-size: 24px; font-weight: 600; margin-bottom: 16px; margin-top: 0;">Restablecimiento de contraseña</h1>
+                    <p style="color: #4b5563; font-size: 16px; line-height: 24px; margin-bottom: 32px;">
+                        Hemos recibido una solicitud para restablecer la contraseña de tu cuenta. Haz clic en el botón de abajo para elegir una nueva contraseña:
+                    </p>
+                    <a href="${ENVIRONMENT.URL_FRONTEND + `/reset-password/${reset_password_token}`}" 
+                        style="display: inline-block; background-color: #611f69; color: #ffffff; font-size: 16px; font-weight: 500; text-decoration: none; padding: 12px 24px; border-radius: 6px; margin-bottom: 24px;">
+                        Restablecer contraseña
+                    </a>
+                    <p style="color: #9ca3af; font-size: 13px; line-height: 20px; margin-top: 32px; border-top: 1px solid #e5e7eb; padding-top: 24px;">
+                        Si el botón superior no funciona, copia y pega este enlace en tu navegador:<br>
+                        <a href="${ENVIRONMENT.URL_FRONTEND + `/reset-password/${reset_password_token}`}" style="color: #611f69; word-break: break-all;">${ENVIRONMENT.URL_FRONTEND + `/reset-password/${reset_password_token}`}</a>
+                    </p>
+                    <p style="color: #9ca3af; font-size: 12px; margin-top: 16px;">
+                        Si no has solicitado este cambio, por favor ignora este correo. Tu contraseña seguirá siendo la misma.
+                    </p>
+                </div>
+            </div>
+            `
+        })
     }
 
       async resetPassword({reset_password_token, password}) {
         if (!reset_password_token || !password) {
             throw new ServerError("Todos los campos son obligatorios", 400)
         }
-        try {
-            // Verificamos que el token sea valido
-            const { email } = jwt.verify(reset_password_token, ENVIRONMENT.JWT_SECRET_KEY);
-            const user = await userRepository.getByEmail(email);
-            if (!user) {
-                throw new ServerError("El usuario no existe", 404)
-            }
-            const hashedPassword = await bcrypt.hash(password, 12);
-            await userRepository.updateById(user._id, { password: hashedPassword });
-
-        } catch (error) {
-            if (error instanceof jwt.JsonWebTokenError) {
-                throw new ServerError("Token de restablecimiento de contraseña inválido", 400)
-            }
-            else if (error instanceof jwt.TokenExpiredError) {
-                throw new ServerError("Token de restablecimiento de contraseña expirado", 400)
-            }
-            throw error
+        // Verificamos que el token sea valido
+        const { email } = jwt.verify(reset_password_token, ENVIRONMENT.JWT_SECRET_KEY);
+        const user = await userRepository.getByEmail(email);
+        if (!user) {
+            throw new ServerError("El usuario no existe", 404)
         }
+        const hashedPassword = await bcrypt.hash(password, 12);
+        await userRepository.updateById(user._id, { password: hashedPassword });
     }
 }
 
