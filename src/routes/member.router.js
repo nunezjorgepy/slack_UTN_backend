@@ -2,10 +2,24 @@ import { Router } from "express";
 import authMiddleware from "../middlewares/authMiddleware.js";
 import memberWorkspaceController from "../controllers/member.controller.js";
 import verifyMemberWorkspaceMiddleware from "../middlewares/verifyMemberWorkspaceMiddleware.js";
+import verifyWorkspaceMiddleware from "../middlewares/verifyWorkspaceMiddleware.js";
 
 // TODO: creo que lo mejor va a ser rehacer todas las rutas para que coincidan con el modelo de datos
 // TODO: middleware que verifique si el usuario ya es parte del espacio
-const memberWorkspaceRouter = Router()
+const memberWorkspaceRouter = Router({
+    mergeParams: true
+})
+
+memberWorkspaceRouter.post(
+    '/invite',
+    authMiddleware,
+    verifyWorkspaceMiddleware,
+    verifyMemberWorkspaceMiddleware(['owner', 'admin']),
+    /* memberWorkspaceController.inviteMember */
+    (req, res) => {
+        res.send('Desde esta ruta se puede invitar miembros')
+    }
+)
 
 /* 
 TODO DELETE: eliminar si todo funciona como corresponde

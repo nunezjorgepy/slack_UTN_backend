@@ -3,6 +3,11 @@ import ServerError from "../helpers/error.helper.js"
 import workspaceRepository from "../repository/workspace.repository.js"
 
 async function verifyWorkspaceMiddleware(req, res, next) {
+    /**
+     * Descripción: Verifica si el espacio de trabajo existe
+     * @param {string} workspace_id - ID del espacio de trabajo
+     * @returns {JSON} - Espacio de trabajo
+     */
     const { workspace_id } = req.params
     
     // Si no se proporciona el espacio de trabajo

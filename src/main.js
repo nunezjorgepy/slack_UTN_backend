@@ -45,19 +45,3 @@ app.listen(
         console.log('La aplicacion se esta escuchando en el puerto ' + ENVIRONMENT.PORT)
     }
 )
-
-
-/* mailerTransporter.sendMail(
-    {
-        from: ENVIRONMENT.MAIL_USER,
-        to: ENVIRONMENT.MAIL_USER, //Aca va a donde quieren enviar
-        subject: 'Test de envio de email',
-        html: '<h1>Si recibis este email, el sistema de envio de emails funciona correctamente</h1>'
-    }
-)
- */
-
-
-//workspaceRepository.create('test', 'lorem', '', true)
-
-//workspaceMemberRepository.create('69c1a7a7f5505d11801c0778', '69b1d51bf91f9031fa4f2d04', 'owner')

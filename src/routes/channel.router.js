@@ -7,7 +7,9 @@ import verifyWorkspaceMiddleware from '../middlewares/verifyWorkspaceMiddleware.
 import verifyMemberWorkspaceMiddleware from '../middlewares/verifyMemberWorkspaceMiddleware.js'
 import verifyChannelMiddleware from '../middlewares/verifyChannelMiddleware.js'
 
-const channelRouter = Router({mergeParams: true})
+const channelRouter = Router({
+    mergeParams: true
+})
 
 channelRouter.post(
     '/',
