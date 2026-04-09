@@ -3,6 +3,7 @@ import ServerError from "../helpers/error.helper.js"
 import workspaceMemberRepository from "../repository/member.repository.js"
 import userRepository from "../repository/user.repository.js"
 
+// TODO: hay algunas funciones que creo que ya no se utiliazn más. Verificar y eliminar.
 
 class MemberWorkspaceService {
     async create(user_id, workspace_id, role, isActive = false) {
