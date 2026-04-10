@@ -6,6 +6,7 @@ import authMiddleware from '../middlewares/authMiddleware.js'
 import verifyWorkspaceMiddleware from '../middlewares/verifyWorkspaceMiddleware.js'
 import verifyMemberWorkspaceMiddleware from '../middlewares/verifyMemberWorkspaceMiddleware.js'
 import verifyChannelMiddleware from '../middlewares/verifyChannelMiddleware.js'
+import ROLE_CONSTANTS from '../constants/roles.constants.js'
 
 const channelRouter = Router({
     mergeParams: true
@@ -15,7 +16,7 @@ channelRouter.post(
     '/',
     authMiddleware,
     verifyWorkspaceMiddleware,
-    verifyMemberWorkspaceMiddleware(['owner', 'admin']),
+    verifyMemberWorkspaceMiddleware([ROLE_CONSTANTS.OWNER, ROLE_CONSTANTS.ADMIN]),
     channelController.create
 )
 
@@ -41,7 +42,7 @@ channelRouter.delete(
     '/soft-delete/:channel_id',
     authMiddleware,
     verifyWorkspaceMiddleware,
-    verifyMemberWorkspaceMiddleware(['owner', 'admin']),
+    verifyMemberWorkspaceMiddleware([ROLE_CONSTANTS.OWNER, ROLE_CONSTANTS.ADMIN]),
     verifyChannelMiddleware,
     channelController.softDelete
 )
@@ -50,7 +51,7 @@ channelRouter.delete(
     '/delete/:channel_id',
     authMiddleware,
     verifyWorkspaceMiddleware,
-    verifyMemberWorkspaceMiddleware(['owner', 'admin']),
+    verifyMemberWorkspaceMiddleware([ROLE_CONSTANTS.OWNER, ROLE_CONSTANTS.ADMIN]),
     verifyChannelMiddleware,
     channelController.delete
 )
