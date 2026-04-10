@@ -27,5 +27,13 @@ memberWorkspaceRouter.post(
     memberWorkspaceController.responseToInvitation
 )
 
+memberWorkspaceRouter.delete(
+    '/:member_id',
+    authMiddleware,
+    verifyWorkspaceMiddleware,
+    verifyMemberWorkspaceMiddleware(),
+    memberWorkspaceController.deleteMember
+)
+
 
 export default memberWorkspaceRouter

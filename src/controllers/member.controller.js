@@ -1,5 +1,6 @@
 import ENVIRONMENT from "../config/environment.config.js"
 import ServerError from "../helpers/error.helper.js"
+import workspaceMemberRepository from "../repository/member.repository.js"
 import memberWorkspaceService from "../services/memberWorkspace.service.js"
 import jwt from 'jsonwebtoken'
 
@@ -144,6 +145,60 @@ class MemberWorkspaceController {
                     }
                 )
             }
+            //Errores esperables en el sistema
+            if (error instanceof ServerError) {
+                return res.status(error.status).json(
+                    {
+                        ok: false,
+                        status: error.status,
+                        message: error.message
+                    }
+                )
+            }
+            else {
+                console.error('Error inesperado en el registro', error)
+                return res.status(500).json(
+                    {
+                        ok: false,
+                        status: 500,
+                        message: "Internal server error"
+                    }
+                )
+            }
+        }
+    }
+
+    async deleteMember(req, res) {
+        const { member_id } = req.params
+        const workspace = req.workspace
+        const user = req.user
+        const member = req.member
+
+        const deleting_member = await workspaceMemberRepository.getUserById(member_id, workspace.id)
+        
+        try {
+            if(!member_id || !workspace) {
+                throw new ServerError('Todos los campos son obligatorios', 400)
+            }
+
+            const deletedMember = await memberWorkspaceService.deleteMember(
+                member_id,
+                workspace,
+                deleting_member
+            )
+            
+            res.status(200).json(
+                {
+                    ok: true,
+                    status: 200,
+                    message: "Miembro eliminado.",
+                    data: {
+                        deletedMember
+                    }
+                }
+            )
+            
+        } catch (error) {
             //Errores esperables en el sistema
             if (error instanceof ServerError) {
                 return res.status(error.status).json(
