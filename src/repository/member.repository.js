@@ -145,6 +145,32 @@ class WorkspaceMemberRepository {
         
         return members_mapped
     }
+    async getActiveMemberList(fk_id_workspace) {
+        /**
+         * Descripción: Obtiene la lista de miembros activos de un espacio de trabajo
+         * @param {string} fk_id_workspace - ID del espacio de trabajo
+         * @returns {JSON} - Lista de miembros activos
+         */
+
+        const members = await WorkspaceMember.find({ fk_id_workspace: fk_id_workspace, isActive: true })
+        .populate('fk_id_user', 'name email')
+        
+        const members_mapped = members.map(
+            (member) => {
+                return {
+                    member_id: member._id,
+                    member_role: member.role,
+                    member_created_at: member.created_at,
+                    
+                    user_id: member.fk_id_user._id,
+                    user_name: member.fk_id_user.name,
+                    user_email: member.fk_id_user.email,
+                }
+            }
+        )
+        
+        return members_mapped
+    }
 
     
 }
