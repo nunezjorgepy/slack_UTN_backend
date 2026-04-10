@@ -186,6 +186,40 @@ class MemberWorkspaceService {
             `
         })
     }
+
+    async responseToInvitation(email, newMember_id, action, member_email) {
+        /**
+         * Descripción: Responde a una invitación al espacio de trabajo
+         * @param {string} email - Email del usuario
+         * @param {string} newMember_id - ID del nuevo miembro
+         * @param {string} action - Acción a realizar
+         * @param {string} member_email - Email del usuario logueado
+         * @returns {Object} - Objeto con los datos del nuevo miembro
+         */
+        if (!email || !newMember_id || !action || !member_email) {
+            throw new ServerError("Todos los campos son obligatorios", 404)
+        }
+
+        // Si el mail no coincide con el del payload, no autorizar
+        if (email !== member_email) {
+            throw new ServerError("No tenes autorización para realizar esta acción", 403)
+        }
+
+        // Busco al miembro
+        const member = await workspaceMemberRepository.getById(newMember_id)
+        // Si acceptInvitation no es 'pending', lanzar error
+        if (member.acceptInvitation !== INVITATION_CONSTANTS.PENDING) {
+            throw new ServerError("Ya has respondido a esta invitación", 400)
+        }
+
+        const newMember = await workspaceMemberRepository.updateById(
+            newMember_id, 
+            { 
+                acceptInvitation: action 
+            }
+        )
+        return newMember
+    }
 }
 
 const memberWorkspaceService = new MemberWorkspaceService()

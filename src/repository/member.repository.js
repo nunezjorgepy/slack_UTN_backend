@@ -105,11 +105,11 @@ class WorkspaceMemberRepository {
     }
 
     async deleteById(workspace_member_id) {
-        await WorkspaceMember.findByIdAndDelete(workspace_member_id)
+        return await WorkspaceMember.findByIdAndDelete(workspace_member_id)
     }
 
     async getById(workspace_member_id) {
-        await WorkspaceMember.findById(workspace_member_id)
+        return await WorkspaceMember.findById(workspace_member_id)
     }
 
     async checkInvitationStatus(fk_id_user, fk_id_workspace, acceptInvitation) {
@@ -155,6 +155,21 @@ class WorkspaceMemberRepository {
             member_id,
             {role: role},
             { new: true }
+        )
+        return new_workspace_member
+    }
+
+    async updateById(member_id, data) {
+        /**
+         * Descripción: Actualiza el estado de la invitación de un miembro del espacio de trabajo
+         * @param {string} member_id - ID del miembro
+         * @param {Object} data - Datos a actualizar
+         * @returns {Object} - Objeto con los datos del nuevo miembro
+         */
+        const new_workspace_member = await WorkspaceMember.findByIdAndUpdate(
+            member_id,
+            data,
+            { returnDocument: 'after' }
         )
         return new_workspace_member
     }
