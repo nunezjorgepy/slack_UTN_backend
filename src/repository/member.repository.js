@@ -1,11 +1,13 @@
+import ROLE_CONSTANTS from "../constants/roles.constants.js"
 import WorkspaceMember from "../models/workspaceMember.model.js"
 class WorkspaceMemberRepository {
-    async create(fk_id_user, fk_id_workspace, role, acceptInvitation) {
+    async create(fk_id_user, fk_id_workspace, role, isActive, acceptInvitation) {
         /**
          * Descripción: Crea un nuevo miembro del espacio de trabajo
          * @param {string} fk_id_user - ID del usuario
          * @param {string} fk_id_workspace - ID del espacio de trabajo
          * @param {string} role - Rol del usuario
+         * @param {boolean} isActive - Estado de actividad del usuario
          * @param {string} acceptInvitation - Estado de la invitación
          * @returns {Object} - Objeto con los datos del nuevo miembro
          */
@@ -13,7 +15,8 @@ class WorkspaceMemberRepository {
             fk_id_user: fk_id_user,
             fk_id_workspace: fk_id_workspace,
             role: role,
-            acceptInvitation: role === 'owner' ? undefined : acceptInvitation
+            isActive: isActive,
+            acceptInvitation: acceptInvitation,
         })
     }
 
@@ -43,65 +46,6 @@ class WorkspaceMemberRepository {
         )
 
         return members_mapped
-    }
-
-    async getWorkspaceOwnerByUserandWorkspaceId(fk_id_user, fk_id_workspace){
-        return await WorkspaceMember.find({
-            fk_id_user,
-            fk_id_workspace,
-            role: 'owner'
-        })
-    }
-
-    async getActiveWorkspacesByUserId(fk_id_user) {
-        /**
-         * Consigue la lista de todos los espacios de trabajo activos de un usuario
-         * @param {string} fk_id_user - Identificador en mongoDB del usuario
-         * @returns {Array<Object>} Lista con objetos. Cada objeto representa un espacio de trabajo
-         */
-
-        // Encuentro la lista de espacios de trabajo activos
-        const activeWorkspaces = await WorkspaceMember.find({fk_id_user, isActive: true })
-        .populate('fk_id_user', 'name email')
-        .populate('fk_id_workspace', 'title description url_image isActive')
-
-        const activeWorkspaces_mapped = activeWorkspaces.map(
-            (member) => {
-                /* Normalizo */
-                return {
-                    member_workspace_id: member._id,
-                    member_workspace_created_at: member.created_at,
-                    
-                    user_role: member.role,
-                    user_id: member.fk_id_user._id,
-                    user_name: member.fk_id_user.name,
-                    user_email: member.fk_id_user.email,
-                    
-                    workspace_id: member.fk_id_workspace._id,
-                    workspace_title: member.fk_id_workspace.title,
-                    workspace_description: member.fk_id_workspace.description,
-                    workspace_url_image: member.fk_id_workspace.url_image,
-                    workspace_is_active: member.fk_id_workspace.isActive
-                }
-            }
-        )
-
-        const activeWorkspaces_filtered = activeWorkspaces_mapped.filter(
-            (workspace) => workspace.workspace_is_active
-        )
-        
-        /* TODO: verificar si esta bien después de crear el endpoint para agregar miembros */
-        const activeWorkspaces_with_members = await Promise.all(
-            activeWorkspaces_filtered.map(async (workspace) => {
-                const members = await this.getMemberList(workspace.workspace_id);
-                return {
-                    ...workspace,
-                    members
-                };
-            })
-        );
-        
-        return activeWorkspaces_with_members;
     }
 
     async deleteById(workspace_member_id) {

@@ -27,29 +27,5 @@ memberWorkspaceRouter.post(
     memberWorkspaceController.responseToInvitation
 )
 
-/* 
-TODO DELETE: eliminar si todo funciona como corresponde
-memberWorkspaceRouter.get(
-    '/active',
-    authMiddleware,
-    memberWorkspaceController.getActiveWorkspacesByUserId
-)
-
-memberWorkspaceRouter.get(
-    '/list/:workspace_id',
-    authMiddleware,
-    memberWorkspaceController.getMemberList
-) 
-
-
-
-memberWorkspaceRouter.post(
-    '/add',
-    authMiddleware,
-    verifyMemberWorkspaceMiddleware(['owner']),
-    memberWorkspaceController.addMember
-) 
-*/
-
 
 export default memberWorkspaceRouter

@@ -22,28 +22,6 @@ class MemberWorkspaceService {
         )
     }
 
-    // TODO: verificar si se usa en algún otro lado. Caso contrario, eliminar.
-    /* async findOwnerByUserAndWorkspaceId(user, workspace_id){
-        if(!user || !workspace_id) {
-            throw new ServerError("Todos los campos son obligatorios", 404)
-        }
-
-        return await workspaceMemberRepository.getWorkspaceOwnerByUserandWorkspaceId(
-            user.id,
-            workspace_id
-        )
-    } */
-
-    async getActiveWorkspacesByUserId(user_id) {
-        if (!user_id) {
-            throw new ServerError("Todos los campos son obligatorios", 404)
-        }
-
-        return await workspaceMemberRepository.getActiveWorkspacesByUserId(
-            user_id
-        )
-    }
-
     async getMemberList(workspace_id) {
         if (!workspace_id) {
             throw new ServerError("Todos los campos son obligatorios", 404)
@@ -51,23 +29,6 @@ class MemberWorkspaceService {
 
         return await workspaceMemberRepository.getMemberList(
             workspace_id
-        )
-    }
-
-    async addMember(fk_id_user, fk_id_workspace, role) {
-        if (!fk_id_user || !fk_id_workspace || !role) {
-            throw new ServerError("Todos los campos son obligatorios", 404)
-        }
-
-        const member_found = await workspaceMemberRepository.getUserById(fk_id_user, fk_id_workspace)
-        if (member_found) {
-            throw new ServerError("El usuario ya es miembro del espacio de trabajo", 400)
-        }
-
-        return await workspaceMemberRepository.create(
-            fk_id_user,
-            fk_id_workspace,
-            role
         )
     }
 
