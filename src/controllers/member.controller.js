@@ -171,20 +171,13 @@ class MemberWorkspaceController {
     async deleteMember(req, res) {
         const { member_id } = req.params
         const workspace = req.workspace
-        const user = req.user
         const member = req.member
-
-        const deleting_member = await workspaceMemberRepository.getUserById(member_id, workspace.id)
         
         try {
-            if(!member_id || !workspace) {
-                throw new ServerError('Todos los campos son obligatorios', 400)
-            }
-
             const deletedMember = await memberWorkspaceService.deleteMember(
                 member_id,
-                workspace,
-                deleting_member
+                member,
+                workspace.id
             )
             
             res.status(200).json(

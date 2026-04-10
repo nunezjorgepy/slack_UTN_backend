@@ -52,6 +52,14 @@ class WorkspaceMemberRepository {
         return await WorkspaceMember.findByIdAndDelete(workspace_member_id)
     }
 
+    async softDeleteById(workspace_member_id) {
+        return await WorkspaceMember.findByIdAndUpdate(
+            workspace_member_id, 
+            { isActive: false },
+            { returnDocument: 'after' }
+        )
+    }
+
     async getById(workspace_member_id) {
         return await WorkspaceMember.findById(workspace_member_id)
     }

@@ -183,6 +183,56 @@ class MemberWorkspaceService {
         )
         return newMember
     }
+
+    async deleteMember(member_id, member, workspace_id) {
+        /**
+         * Descripción: Elimina un miembro del espacio de trabajo (softDelete)
+         * @param {string} member_id - ID del miembro a eliminar
+         * @param {Object} member - Objeto con los datos del miembro
+         * @param {Object} deleting_member - Objeto con los datos del miembro a eliminar
+         * @returns {Object} - Objeto con los datos del miembro eliminado
+         */
+        if (!member_id || !member || !workspace_id) {
+            throw new ServerError("Todos los campos son obligatorios.", 404)
+        }
+
+        console.log(member)
+
+        // Busco al usuario por id y espacio de trabajo
+        const deleting_member = await workspaceMemberRepository.getById(member_id)
+
+        // Si no existe el miembro, significa que no es parte del espacio de trabajo
+        if (!deleting_member) {
+            throw new ServerError("No existe el miembro.", 404)
+        }
+
+        // Si el role de deleting_member es 'owner', no se puede eliminar
+        if (deleting_member.role === ROLE_CONSTANTS.OWNER) {
+            throw new ServerError("No puedes eliminar al dueño del espacio de trabajo.", 400)
+        }
+
+        // Si el usuario esta inactivo, ya fue eliminado
+        if (!deleting_member.isActive) {
+            throw new ServerError("El usuario no forma parte del espacio de trabajo.", 400)
+        }
+
+        // Siendo usuario, intenta eliminar a otro usuario
+        if (member.role === ROLE_CONSTANTS.USER && member.id !== deleting_member.id) {
+            throw new ServerError("No puedes eliminar a otro usuario.", 400)
+        }
+
+        // Siendo administrador, intenta eliminar a otro administrador
+        if (
+            member.role === ROLE_CONSTANTS.ADMIN && 
+            deleting_member.role === ROLE_CONSTANTS.ADMIN && 
+            member.id !== deleting_member.id
+        ) {
+            throw new ServerError("No puedes eliminar a otro administrador.", 400)
+        }
+
+        const deletedMember = await workspaceMemberRepository.softDeleteById(member_id)
+        return deletedMember
+    }
 }
 
 const memberWorkspaceService = new MemberWorkspaceService()
