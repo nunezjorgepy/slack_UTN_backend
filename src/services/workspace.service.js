@@ -14,7 +14,9 @@ class WorkscapeService {
         await memberWorkspaceService.create(
             user.id,
             workspace_created._id,
-            'owner'
+            'owner',
+            true,
+            undefined
         )
 
         return workspace_created

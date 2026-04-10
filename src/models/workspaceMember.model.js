@@ -20,8 +20,7 @@ const workspaceMemberSchema = new mongoose.Schema({
     },
     acceptInvitation: {
         type: String,
-        enum: INVITATION_CONSTANTS,
-        default: INVITATION_CONSTANTS.PENDING
+        enum: INVITATION_CONSTANTS
     },
     isActive: {
         type: Boolean,

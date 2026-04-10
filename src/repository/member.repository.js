@@ -16,7 +16,7 @@ class WorkspaceMemberRepository {
             fk_id_workspace: fk_id_workspace,
             role: role,
             isActive: isActive,
-            acceptInvitation: acceptInvitation,
+            acceptInvitation: role === 'owner' ? null : acceptInvitation
         })
     }
 

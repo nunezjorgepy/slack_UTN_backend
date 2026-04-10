@@ -74,6 +74,7 @@ class MemberWorkspaceService {
             user_found.id,
             workspace._id,
             role,
+            false,
             INVITATION_CONSTANTS.PENDING
         )
 
@@ -176,7 +177,8 @@ class MemberWorkspaceService {
         const newMember = await workspaceMemberRepository.updateById(
             newMember_id, 
             { 
-                acceptInvitation: action 
+                acceptInvitation: action,
+                isActive: action === INVITATION_CONSTANTS.ACCEPTED ? true : false
             }
         )
         return newMember
