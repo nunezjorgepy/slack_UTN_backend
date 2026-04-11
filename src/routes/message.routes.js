@@ -4,6 +4,7 @@ import authMiddleware from "../middlewares/authMiddleware.js"
 import verifyWorkspaceMiddleware from "../middlewares/verifyWorkspaceMiddleware.js"
 import verifyMemberWorkspaceMiddleware from "../middlewares/verifyMemberWorkspaceMiddleware.js"
 import verifyChannelMiddleware from "../middlewares/verifyChannelMiddleware.js"
+import messageController from "../controllers/messages.controller.js"
 
 
 const messageRouter = Router({
@@ -19,20 +20,14 @@ messageRouter.post(
     '/',
     verifyMemberWorkspaceMiddleware(),
     verifyChannelMiddleware,
-    /* messageController.create */
-    (req, res) => {
-        res.send('Message created')
-    }
+    messageController.create
 )
 
 messageRouter.get(
     '/',
     verifyMemberWorkspaceMiddleware(),
     verifyChannelMiddleware,
-    /* messageController.getAll */
-    (req, res) => {
-        res.send('Message list')
-    }
+    messageController.getAll
 )
 
 export default messageRouter
