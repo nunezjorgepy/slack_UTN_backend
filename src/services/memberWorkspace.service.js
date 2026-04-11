@@ -251,11 +251,6 @@ class MemberWorkspaceService {
             throw new ServerError("No puedes asignar el rol de owner.", 400)
         }
 
-        // Un miembro con role de user, no puede modificar roles
-        if (member.role === ROLE_CONSTANTS.USER) {
-            throw new ServerError("No puedes modificar roles.", 400)
-        }
-
         // Busco al usuario por id y espacio de trabajo
         const member_to_modify = await workspaceMemberRepository.getById(member_id)
 
@@ -272,11 +267,6 @@ class MemberWorkspaceService {
         // Si el usuario esta inactivo, ya fue eliminado
         if (!member_to_modify.isActive) {
             throw new ServerError("El usuario no forma parte del espacio de trabajo.", 400)
-        }
-        
-        // Siendo usuario, intenta modificar el rol de otro usuario
-        if (member.role === ROLE_CONSTANTS.USER && member.id !== member_to_modify.id) {
-            throw new ServerError("No puedes modificar el rol de otro usuario.", 400)
         }
         
         // Si el role de member_to_modify es igual al role que se quiere modificar

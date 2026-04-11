@@ -39,7 +39,7 @@ memberWorkspaceRouter.put(
     '/:member_id',
     authMiddleware,
     verifyWorkspaceMiddleware,
-    verifyMemberWorkspaceMiddleware(),
+    verifyMemberWorkspaceMiddleware([ROLE_CONSTANTS.OWNER, ROLE_CONSTANTS.ADMIN]),
     memberWorkspaceController.modifyRole
 )
 
