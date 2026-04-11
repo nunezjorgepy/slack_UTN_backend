@@ -12,7 +12,22 @@ class MessageRepository {
     }
 
     async getAll(channel_id) {
-        return await ChannelMessages.find({ fk_id_channel: channel_id })
+        const messages = await ChannelMessages.find({ fk_id_channel: channel_id })
+            .populate('fk_id_member', 'name')
+
+        const messages_mapped = messages.map(
+            (message) => {
+                return {
+                    message_id: message._id,
+                    content: message.content,
+                    created_at: message.created_at,
+                    fk_id_member: message.fk_id_member,
+                    fk_id_channel: message.fk_id_channel
+                }
+            }
+        )
+
+        return messages_mapped
     }
 }
 
