@@ -15,9 +15,9 @@ const channelMessagesSchema = new mongoose.Schema({
         ref: "Channel",
         required: true
     },
-    fk_id_member: {
+    fk_id_user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "WorkspaceMember",
+        ref: "User",
         required: true
     },
     content: {

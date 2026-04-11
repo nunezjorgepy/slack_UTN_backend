@@ -6,10 +6,10 @@ class MessageController {
     async create(req, res) {
         try {
             const { content } = req.body
-            const member = req.member
+            const user = req.user
             const channel_id = req.params.channel_id
 
-            const message = await messageService.create(member._id, channel_id, content)
+            const message = await messageService.create(user.id, channel_id, content)
 
             return res.status(201).json(
                 {

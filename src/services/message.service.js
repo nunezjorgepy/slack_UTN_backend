@@ -4,17 +4,17 @@ import ServerError from "../helpers/error.helper.js"
 
 
 class MessageService {
-    async create(member_id, channel_id, content) {
+    async create(user_id, channel_id, content) {
         /**
          * Descripción: Crea un mensaje
-         * @param {string} member_id - ID del miembro que crea el mensaje
+         * @param {string} user_id - ID del usuario que crea el mensaje
          * @param {string} channel_id - ID del canal
          * @param {string} content - Contenido del mensaje
          * @returns {Object} - Mensaje creado
          */
 
         // Si faltan datos
-        if (!member_id || !channel_id || !content.trim()) {
+        if (!user_id || !channel_id || !content.trim()) {
             throw new ServerError("Faltan datos para crear el mensaje", 400)
         }
 
@@ -23,7 +23,7 @@ class MessageService {
             throw new ServerError("El ID del canal es invalido", 400)
         }
 
-        return await messageRepository.create(member_id, channel_id, content)
+        return await messageRepository.create(user_id, channel_id, content)
     }
 
     async getAll(channel_id) {
