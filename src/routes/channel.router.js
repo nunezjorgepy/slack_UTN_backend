@@ -8,6 +8,9 @@ import verifyMemberWorkspaceMiddleware from '../middlewares/verifyMemberWorkspac
 import verifyChannelMiddleware from '../middlewares/verifyChannelMiddleware.js'
 import ROLE_CONSTANTS from '../constants/roles.constants.js'
 
+// Routers
+import messageRouter from './message.routes.js'
+
 const channelRouter = Router({
     mergeParams: true
 })
@@ -54,6 +57,11 @@ channelRouter.delete(
     verifyMemberWorkspaceMiddleware([ROLE_CONSTANTS.OWNER, ROLE_CONSTANTS.ADMIN]),
     verifyChannelMiddleware,
     channelController.delete
+)
+
+channelRouter.use(
+    '/:channel_id/message',
+    messageRouter
 )
 
 export default channelRouter
