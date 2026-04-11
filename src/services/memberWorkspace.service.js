@@ -233,6 +233,69 @@ class MemberWorkspaceService {
         const deletedMember = await workspaceMemberRepository.softDeleteById(member_id)
         return deletedMember
     }
+
+    async modifyRole(member_id, member, role) {
+        /**
+         * Descripción: Modifica el rol de un miembro del espacio de trabajo
+         * @param {string} member_id - ID del miembro a modificar
+         * @param {Object} member - Objeto con los datos del miembro
+         * @param {string} role - Nuevo rol
+         * @returns {Object} - Objeto con los datos del miembro modificado
+         */
+        if (!member_id || !member || !role) {
+            throw new ServerError("Todos los campos son obligatorios.", 404)
+        }        
+        
+        // No se puede asignar el role de owner
+        if (role === ROLE_CONSTANTS.OWNER) {
+            throw new ServerError("No puedes asignar el rol de owner.", 400)
+        }
+
+        // Un miembro con role de user, no puede modificar roles
+        if (member.role === ROLE_CONSTANTS.USER) {
+            throw new ServerError("No puedes modificar roles.", 400)
+        }
+
+        // Busco al usuario por id y espacio de trabajo
+        const member_to_modify = await workspaceMemberRepository.getById(member_id)
+
+        // Si no existe el miembro, significa que no es parte del espacio de trabajo
+        if (!member_to_modify) {
+            throw new ServerError("No existe el miembro.", 404)
+        }
+
+        // Si el role de member_to_modify es 'owner', no se puede modificar
+        if (member_to_modify.role === ROLE_CONSTANTS.OWNER) {
+            throw new ServerError("No puedes modificar el rol del dueño del espacio de trabajo.", 400)
+        }
+        
+        // Si el usuario esta inactivo, ya fue eliminado
+        if (!member_to_modify.isActive) {
+            throw new ServerError("El usuario no forma parte del espacio de trabajo.", 400)
+        }
+        
+        // Siendo usuario, intenta modificar el rol de otro usuario
+        if (member.role === ROLE_CONSTANTS.USER && member.id !== member_to_modify.id) {
+            throw new ServerError("No puedes modificar el rol de otro usuario.", 400)
+        }
+        
+        // Si el role de member_to_modify es igual al role que se quiere modificar
+        if (member_to_modify.role === role) {
+            throw new ServerError("El usuario ya tiene ese rol.", 400)
+        }
+
+        // Siendo administrador, intenta modificar el rol de otro administrador
+        if (
+            member.role === ROLE_CONSTANTS.ADMIN && 
+            member_to_modify.role === ROLE_CONSTANTS.ADMIN && 
+            member.id !== member_to_modify.id
+        ) {
+            throw new ServerError("No puedes modificar el rol de otro administrador.", 400)
+        }
+
+        const updatedMember = await workspaceMemberRepository.updateRoleById(member_id, role)
+        return updatedMember
+    }
 }
 
 const memberWorkspaceService = new MemberWorkspaceService()

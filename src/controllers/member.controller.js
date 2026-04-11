@@ -214,6 +214,53 @@ class MemberWorkspaceController {
             }
         }
     }
+
+    async modifyRole(req, res) {
+        const { member_id } = req.params
+        const { role } = req.body
+        const member = req.member
+        
+        try {
+            const updatedMember = await memberWorkspaceService.modifyRole(
+                member_id,
+                member,
+                role
+            )
+            
+            res.status(200).json(
+                {
+                    ok: true,
+                    status: 200,
+                    message: "Miembro actualizado.",
+                    data: {
+                        updatedMember
+                    }
+                }
+            )
+            
+        } catch (error) {
+            //Errores esperables en el sistema
+            if (error instanceof ServerError) {
+                return res.status(error.status).json(
+                    {
+                        ok: false,
+                        status: error.status,
+                        message: error.message
+                    }
+                )
+            }
+            else {
+                console.error('Error inesperado en el registro', error)
+                return res.status(500).json(
+                    {
+                        ok: false,
+                        status: 500,
+                        message: "Internal server error"
+                    }
+                )
+            }
+        }
+    }
 }
 
 const memberWorkspaceController = new MemberWorkspaceController()

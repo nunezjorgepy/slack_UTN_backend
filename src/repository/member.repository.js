@@ -106,7 +106,7 @@ class WorkspaceMemberRepository {
         const new_workspace_member = await WorkspaceMember.findByIdAndUpdate(
             member_id,
             {role: role},
-            { new: true }
+            { returnDocument: 'after' }
         )
         return new_workspace_member
     }
@@ -126,7 +126,6 @@ class WorkspaceMemberRepository {
         return new_workspace_member
     }
 
-    // Se usa en el servicio de workspace
     async getMemberList(fk_id_workspace) {
         /**
          * Descripción: Obtiene la lista de miembros de un espacio de trabajo

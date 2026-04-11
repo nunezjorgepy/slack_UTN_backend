@@ -35,5 +35,13 @@ memberWorkspaceRouter.delete(
     memberWorkspaceController.deleteMember
 )
 
+memberWorkspaceRouter.put(
+    '/:member_id',
+    authMiddleware,
+    verifyWorkspaceMiddleware,
+    verifyMemberWorkspaceMiddleware(),
+    memberWorkspaceController.modifyRole
+)
+
 
 export default memberWorkspaceRouter
