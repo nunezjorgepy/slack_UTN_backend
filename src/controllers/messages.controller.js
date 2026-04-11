@@ -1,16 +1,17 @@
 import ServerError from "../helpers/error.helper.js"
+import messageService from "../services/message.service.js"
 
 
 class MessageController {
     async create(req, res) {
         try {
             const { content } = req.body
-            const user = req.user
+            const member = req.member
             const channel_id = req.params.channel_id
 
-            const message = await messageService.create(user, channel_id, content)
+            const message = await messageService.create(member._id, channel_id, content)
 
-            res.status(201).json(
+            return res.status(201).json(
                 {
                     ok: true,
                     status: 201,
