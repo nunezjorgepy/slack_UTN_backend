@@ -1,5 +1,6 @@
 import ServerError from "../helpers/error.helper.js"
 import channelService from "../services/channel.service.js"
+import messageService from "../services/message.service.js"
 
 
 class ChannelController {
@@ -88,6 +89,7 @@ class ChannelController {
             const { workspace, channel } = req
             // TODO: cambiar la forma en la que se obtiene el canal a req.channel (después de crear el middleware)
             const channel_found = await channelService.getById(workspace._id, channel.channel_id)
+            const messages = await messageService.getAll(channel_found.channel_id)
             
             res.status(200).json(
                 {
@@ -95,7 +97,8 @@ class ChannelController {
                     status: 200,
                     message: 'Canal obtenido exitosamente',
                     data: {
-                        channel: channel_found
+                        channel: channel_found,
+                        messages
                     }
                 }
             )
