@@ -69,7 +69,8 @@ class WorkspaceController {
                     data: {
                         workspace,
                         members,
-                        channels
+                        channels,
+                        member_logged: req.member
                     }
                 }
             )
