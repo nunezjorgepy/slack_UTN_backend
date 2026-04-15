@@ -11,7 +11,6 @@ class ChannelRepository {
         })
 
         // Normalizo el canal
-        // TODO: sacar las normalizaciones
         const normalized_channel = new ChannelDTO(channel)
         return normalized_channel
     }

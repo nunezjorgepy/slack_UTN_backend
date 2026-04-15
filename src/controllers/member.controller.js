@@ -7,7 +7,7 @@ import jwt from 'jsonwebtoken'
 
 class MemberWorkspaceController {
 
-    async getMemberList(req, res) {
+    async getMemberList(req, res, next) {
         const workspace_id = req.params.workspace_id
         
         try {
@@ -29,30 +29,11 @@ class MemberWorkspaceController {
             )
             
         } catch (error) {
-            //Errores esperables en el sistema
-            if (error instanceof ServerError) {
-                return res.status(error.status).json(
-                    {
-                        ok: false,
-                        status: error.status,
-                        message: error.message
-                    }
-                )
-            }
-            else {
-                console.error('Error inesperado en el registro', error)
-                return res.status(500).json(
-                    {
-                        ok: false,
-                        status: 500,
-                        message: "Internal server error"
-                    }
-                )
-            }
+            next(error)
         }
     }
 
-    async inviteMember(req, res) {
+    async inviteMember(req, res, next) {
         const { email, role } = req.body
         const workspace = req.workspace
         const member_email = req.user.email
@@ -81,30 +62,11 @@ class MemberWorkspaceController {
             )
             
         } catch (error) {
-            //Errores esperables en el sistema
-            if (error instanceof ServerError) {
-                return res.status(error.status).json(
-                    {
-                        ok: false,
-                        status: error.status,
-                        message: error.message
-                    }
-                )
-            }
-            else {
-                console.error('Error inesperado en el registro', error)
-                return res.status(500).json(
-                    {
-                        ok: false,
-                        status: 500,
-                        message: "Internal server error"
-                    }
-                )
-            }
+            next(error)
         }
     }
 
-    async responseToInvitation(req, res) {
+    async responseToInvitation(req, res, next) {
         const { token } = req.query
         const user_email = req.user.email
         
@@ -136,39 +98,11 @@ class MemberWorkspaceController {
             )
             
         } catch (error) {
-            if (error instanceof jwt.JsonWebTokenError) {
-                return res.status(401).json(
-                    {
-                        ok: false,
-                        status: 401,
-                        message: "Token inválido o expirado"
-                    }
-                )
-            }
-            //Errores esperables en el sistema
-            if (error instanceof ServerError) {
-                return res.status(error.status).json(
-                    {
-                        ok: false,
-                        status: error.status,
-                        message: error.message
-                    }
-                )
-            }
-            else {
-                console.error('Error inesperado en el registro', error)
-                return res.status(500).json(
-                    {
-                        ok: false,
-                        status: 500,
-                        message: "Internal server error"
-                    }
-                )
-            }
+            next(error)
         }
     }
 
-    async deleteMember(req, res) {
+    async deleteMember(req, res, next) {
         const { member_id } = req.params
         const workspace = req.workspace
         const member = req.member
@@ -192,30 +126,11 @@ class MemberWorkspaceController {
             )
             
         } catch (error) {
-            //Errores esperables en el sistema
-            if (error instanceof ServerError) {
-                return res.status(error.status).json(
-                    {
-                        ok: false,
-                        status: error.status,
-                        message: error.message
-                    }
-                )
-            }
-            else {
-                console.error('Error inesperado en el registro', error)
-                return res.status(500).json(
-                    {
-                        ok: false,
-                        status: 500,
-                        message: "Internal server error"
-                    }
-                )
-            }
+            next(error)
         }
     }
 
-    async modifyRole(req, res) {
+    async modifyRole(req, res, next) {
         const { member_id } = req.params
         const { role } = req.body
         const member = req.member
@@ -239,26 +154,7 @@ class MemberWorkspaceController {
             )
             
         } catch (error) {
-            //Errores esperables en el sistema
-            if (error instanceof ServerError) {
-                return res.status(error.status).json(
-                    {
-                        ok: false,
-                        status: error.status,
-                        message: error.message
-                    }
-                )
-            }
-            else {
-                console.error('Error inesperado en el registro', error)
-                return res.status(500).json(
-                    {
-                        ok: false,
-                        status: 500,
-                        message: "Internal server error"
-                    }
-                )
-            }
+            next(error)
         }
     }
 }

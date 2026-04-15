@@ -3,7 +3,7 @@ import messageService from "../services/message.service.js"
 
 
 class MessageController {
-    async create(req, res) {
+    async create(req, res, next) {
         try {
             const { content } = req.body
             const user = req.user
@@ -22,29 +22,11 @@ class MessageController {
                 }
             )
         } catch (error) {
-            if (error instanceof ServerError) {
-                return res.status(error.status).json(
-                    {
-                        ok: false,
-                        status: error.status,
-                        message: error.message
-                    }
-                )
-            }
-            else {
-                console.error('Error inesperado en el registro', error)
-                return res.status(500).json(
-                    {
-                        ok: false,
-                        status: 500,
-                        message: "Internal server error"
-                    }
-                )
-            }
+            next(error)
         }
     }
 
-    async getAll(req, res) {
+    async getAll(req, res, next) {
         try {
             const channel_id = req.params.channel_id
 

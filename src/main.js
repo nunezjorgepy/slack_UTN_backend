@@ -8,6 +8,8 @@ import authMiddleware from "./middlewares/authMiddleware.js"
 import workspaceRouter from "./routes/workspace.router.js"
 import memberWorkspaceRouter from "./routes/member.router.js";
 import channelRouter from "./routes/channel.router.js";
+import errorHandlerMiddleware from "./middlewares/errorHandlerMiddleware.js";
+import ServerError from "./helpers/error.helper.js";
 
 
 connectMongoDB()
@@ -33,10 +35,22 @@ app.use('/api/channel', channelRouter)
 app.get(
     '/api/test', 
     authMiddleware, 
-    (request, response) => {
-        const {user} = request
-        response.send('ok, vos sos: ' + user.id)
+    (request, response, next) => {
+        try {
+            const {user} = request
+            if (true) {
+                return next(new ServerError("Error interno X", 400))
+            }
+            response.send('ok, vos sos: ' + user.id)
+        } catch (error) {
+            next(error)
+        }
     }
+)
+
+// Siempre debe estar al final de todos los endpoints
+app.use(
+    errorHandlerMiddleware
 )
 
 app.listen(

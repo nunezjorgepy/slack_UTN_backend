@@ -4,7 +4,7 @@ import workspaceMemberRepository from "../repository/member.repository.js"
 import workspaceService from "../services/workspace.service.js"
 
 class WorkspaceController {
-    async create(req, res) {
+    async create(req, res, next) {
         try {
             const { title, description = '', url_image = '' } = req.body
             const user = req.user
@@ -26,30 +26,11 @@ class WorkspaceController {
                 }
             )
         } catch (error) {
-            //Errores esperables en el sistema
-            if (error instanceof ServerError) {
-                return res.status(error.status).json(
-                    {
-                        ok: false,
-                        status: error.status,
-                        message: error.message
-                    }
-                )
-            }
-            else {
-                console.error('Error inesperado en el registro', error)
-                return res.status(500).json(
-                    {
-                        ok: false,
-                        status: 500,
-                        message: "Internal server error"
-                    }
-                )
-            }
+            next(error)
         }
     }
 
-    async getById(req, res) {
+    async getById(req, res, next) {
         /**
          * Descripción: Obtiene un espacio de trabajo por su ID y la lista de miembros
          * @param {string} workspace_id - ID del espacio de trabajo
@@ -75,28 +56,10 @@ class WorkspaceController {
                 }
             )
         } catch (error) {
-            if (error instanceof ServerError) {
-                return res.status(error.status).json(
-                    {
-                        ok: false,
-                        status: error.status,
-                        message: error.message
-                    }
-                )
-            }
-            else {
-                console.error('Error inesperado en el registro', error)
-                return res.status(500).json(
-                    {
-                        ok: false,
-                        status: 500,
-                        message: "Internal server error"
-                    }
-                )
-            }
+            next(error)
         }
     }
-    async getWorkspaces(req, res) {
+    async getWorkspaces(req, res, next) {
         try {
             //Cliente consultante
             const user = req.user
@@ -115,30 +78,11 @@ class WorkspaceController {
             )
         }
         catch (error) {
-            //Errores esperables en el sistema
-            if (error instanceof ServerError) {
-                return res.status(error.status).json(
-                    {
-                        ok: false,
-                        status: error.status,
-                        message: error.message
-                    }
-                )
-            }
-            else {
-                console.error('Error inesperado en el registro', error)
-                return res.status(500).json(
-                    {
-                        ok: false,
-                        status: 500,
-                        message: "Internal server error"
-                    }
-                )
-            }
+            next(error)
         }
     }
 
-    async getActiveByUserID(req, res) {
+    async getActiveByUserID(req, res, next) {
         try {
             const user = req.user
             const workspaces = await workspaceService.getActiveByUserID(user.id)
@@ -153,11 +97,11 @@ class WorkspaceController {
                 }
             )
         } catch (error) {
-            throw error
+            next(error)
         }
     }
 
-    async edit(req, res) {
+    async edit(req, res, next) {
         const { workspace_id } = req.params
         const { title, description = '', url_image = '' } = req.body
 
@@ -177,11 +121,11 @@ class WorkspaceController {
                 }
             )
         } catch (error) {
-            throw error
+            next(error)
         }
     }
 
-    async softDelete(req, res) {
+    async softDelete(req, res, next) {
         const { workspace_id } = req.params
 
         try {
@@ -195,25 +139,7 @@ class WorkspaceController {
                 }
             )
         } catch (error) {
-            if (error instanceof ServerError) {
-                return res.status(error.status).json(
-                    {
-                        ok: false,
-                        status: error.status,
-                        message: error.message
-                    }
-                )
-            }
-            else {
-                console.error('Error inesperado en el registro', error)
-                return res.status(500).json(
-                    {
-                        ok: false,
-                        status: 500,
-                        message: "Internal server error"
-                    }
-                )
-            }
+            next(error)
         }
     }
 }
