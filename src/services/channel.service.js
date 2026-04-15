@@ -3,7 +3,7 @@ import ServerError from "../helpers/error.helper.js"
 
 
 class ChannelService {
-    async create(workspace_id, name, description) {
+    async create(workspace_id, name, description = '') {
         if(!workspace_id || !name) {
             throw new ServerError("Faltan campos obligatorios", 400)
         }

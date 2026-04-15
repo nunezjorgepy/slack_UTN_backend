@@ -68,6 +68,12 @@ class MemberWorkspaceService {
             throw new ServerError("El usuario ya es miembro del espacio de trabajo", 400)
         }
 
+        // Verifico que el usuario no tenga una invitación pendiente
+        const member_found_2 = await workspaceMemberRepository.checkInvitationStatus(user_found.id, workspace._id, INVITATION_CONSTANTS.PENDING)
+        if (member_found_2) {
+            throw new ServerError("El usuario ya tiene una invitación pendiente", 400)
+        }
+
         // TODO: si el usuario tiene la invitación rechazada, se puede actualizar el estado a pendiente y enviar un nuevo correo. Es necesario hacer un return para no crear un nuevo registro.
 
         const newMember = await workspaceMemberRepository.create(
