@@ -84,7 +84,10 @@ class AuthService {
                 id: user._id,
                 created_at: user.created_at
             },
-            ENVIRONMENT.JWT_SECRET_KEY
+            ENVIRONMENT.JWT_SECRET_KEY,
+            {
+                expiresIn: '7d'
+            }
         )
         return auth_token
     }

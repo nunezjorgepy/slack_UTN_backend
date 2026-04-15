@@ -98,7 +98,7 @@ class MemberWorkspaceService {
             },
             ENVIRONMENT.JWT_SECRET_KEY,
             {
-                expiresIn: "1d"
+                expiresIn: "7d"
             }
         )
 
@@ -110,7 +110,7 @@ class MemberWorkspaceService {
             },
             ENVIRONMENT.JWT_SECRET_KEY,
             {
-                expiresIn: "1d"
+                expiresIn: "7d"
             }
         )
 
