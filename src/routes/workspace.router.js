@@ -40,8 +40,8 @@ workspaceRouter.post(
     workspaceController.create
 )
 
-workspaceRouter.post(
-    '/edit/:workspace_id',
+workspaceRouter.patch(
+    '/:workspace_id',
     authMiddleware,
     verifyWorkspaceMiddleware,
     verifyMemberWorkspaceMiddleware(['owner']),

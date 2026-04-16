@@ -40,6 +40,11 @@ class WorkscapeService {
             throw new ServerError("El espacio de trabajo no existe", 404)
         }
 
+        // Si el espacio esta inactivo
+        if (!workspace.isActive) {
+            throw new ServerError("El espacio de trabajo esta inactivo", 400)
+        }
+
         return workspace
 
     }
