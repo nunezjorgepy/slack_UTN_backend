@@ -19,7 +19,7 @@ memberWorkspaceRouter.post(
     memberWorkspaceController.inviteMember
 )
 
-memberWorkspaceRouter.post(
+memberWorkspaceRouter.patch(
     '/response-to-invitation',
     authMiddleware,
     verifyWorkspaceMiddleware,      // Este es necesario porque si el owner llegó a eliminar el espacio de trabajo, no se podrá responder a la invitación

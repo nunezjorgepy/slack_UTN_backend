@@ -31,6 +31,14 @@ function verifyMemberWorkspaceMiddleware(valid_roles = []) {
                 throw new ServerError('El usuario no es miembro del workspace', 404)
             }
 
+            if (member.acceptInvitation === 'rejected' || member.acceptInvitation === 'pending') {
+                throw new ServerError('El usaurio no aceptó la invitación', 401)
+            }
+
+            if (!member.isActive && member.acceptInvitation === 'accepted') {
+                throw new ServerError('El miembro se fue del espacio. Pedir otra invitación.', 401)
+            }
+
             // Si el role no es válido
             if (valid_roles.length > 0 && !valid_roles.includes(member.role)) {
                 throw new ServerError('El usuario no tiene permiso para realizar esta acción', 403)

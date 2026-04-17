@@ -67,17 +67,17 @@ class MemberWorkspaceController {
     }
 
     async responseToInvitation(req, res, next) {
-        const { token } = req.query
+        const { response_token } = req.query
         const user_email = req.user.email
         
         try {
             // Si no proporciona el token
-            if (!token) {
-                throw new ServerError('Token faltante', 400)
+            if (!response_token) {
+                throw new ServerError('Token de respuesta faltante', 400)
             }
     
             // Extraigo el payload del token
-            const payload = jwt.verify(token, ENVIRONMENT.JWT_SECRET_KEY)
+            const payload = jwt.verify(response_token, ENVIRONMENT.JWT_SECRET_KEY)
 
             const newMember = await memberWorkspaceService.responseToInvitation(
                 payload.email,
@@ -85,12 +85,16 @@ class MemberWorkspaceController {
                 payload.action,
                 user_email
             )
+
+            const message = payload.action === 'accepted' 
+                ? "Has aceptado la invitación. Ya podes acceder al espacio de trabajo."
+                : "Has rechazado la invitación al espacio de trabajo."      /* IMPORTANTE: si cambio este mensaje, también lo tengo que modificar en el Frontend, en WorkpsaceNotFoundScreen.jsx */
             
             res.status(200).json(
                 {
                     ok: true,
                     status: 200,
-                    message: "Miembro invitado.",
+                    message: message,
                     data: {
                         newMember
                     }

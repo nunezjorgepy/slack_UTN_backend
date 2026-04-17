@@ -74,8 +74,6 @@ class MemberWorkspaceService {
             throw new ServerError("El usuario ya tiene una invitación pendiente", 400)
         }
 
-        // TODO: si el usuario tiene la invitación rechazada, se puede actualizar el estado a pendiente y enviar un nuevo correo. Es necesario hacer un return para no crear un nuevo registro.
-
         const newMember = await workspaceMemberRepository.create(
             user_found.id,
             workspace._id,
@@ -84,12 +82,12 @@ class MemberWorkspaceService {
             INVITATION_CONSTANTS.PENDING
         )
 
-        await this.sendInvitationEmail(email, newMember._id, workspace.title)
+        await this.sendInvitationEmail(email, newMember._id, workspace.title, workspace.id)
 
         return newMember
     }
 
-    async sendInvitationEmail(email, newMember_id, workspace_title) {
+    async sendInvitationEmail(email, newMember_id, workspace_title, workspace_id) {
         const accept_invitation_token = jwt.sign(
             {
                 email,
@@ -130,11 +128,11 @@ class MemberWorkspaceService {
                         Hola <strong>${email}</strong>, has sido invitado a unirte al espacio de trabajo <strong>${workspace_title}</strong>. Puedes aceptar o rechazar esta invitación utilizando los siguientes botones:
                     </p>
                     <div style="margin-bottom: 24px; text-align: center;">
-                        <a href="${ENVIRONMENT.URL_FRONTEND}/response-to-invitation?token=${accept_invitation_token}" 
+                        <a href="${ENVIRONMENT.URL_FRONTEND}/${workspace_id}/response-to-invitation?token=${accept_invitation_token}" 
                            style="display: inline-block; background-color: #611f69; color: #ffffff; font-size: 16px; font-weight: 500; text-decoration: none; padding: 12px 24px; border-radius: 6px; margin: 8px 10px;">
                             Aceptar invitación
                         </a>
-                        <a href="${ENVIRONMENT.URL_FRONTEND}/response-to-invitation?token=${reject_invitation_token}" 
+                        <a href="${ENVIRONMENT.URL_FRONTEND}/${workspace_id}/response-to-invitation?token=${reject_invitation_token}" 
                            style="display: inline-block; background-color: #ef4444; color: #ffffff; font-size: 16px; font-weight: 500; text-decoration: none; padding: 12px 24px; border-radius: 6px; margin: 8px 10px;">
                             Rechazar invitación
                         </a>
