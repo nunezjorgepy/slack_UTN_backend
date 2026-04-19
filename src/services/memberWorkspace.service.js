@@ -168,7 +168,7 @@ class MemberWorkspaceService {
 
         // Si el mail no coincide con el del payload, no autorizar
         if (email !== member_email) {
-            throw new ServerError("No tenes autorización para realizar esta acción", 403)
+            throw new ServerError("No tenes autorización para realizar esta acción. Por favor, ingresa con el correo correcto.", 403)
         }
 
         // Busco al miembro
