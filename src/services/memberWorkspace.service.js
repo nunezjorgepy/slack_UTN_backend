@@ -153,22 +153,16 @@ class MemberWorkspaceService {
         })
     }
 
-    async responseToInvitation(email, newMember_id, action, member_email) {
+    async responseToInvitation(email, newMember_id, action) {
         /**
          * Descripción: Responde a una invitación al espacio de trabajo
          * @param {string} email - Email del usuario
          * @param {string} newMember_id - ID del nuevo miembro
          * @param {string} action - Acción a realizar
-         * @param {string} member_email - Email del usuario logueado
          * @returns {Object} - Objeto con los datos del nuevo miembro
          */
-        if (!email || !newMember_id || !action || !member_email) {
+        if (!email || !newMember_id || !action) {
             throw new ServerError("Todos los campos son obligatorios", 404)
-        }
-
-        // Si el mail no coincide con el del payload, no autorizar
-        if (email !== member_email) {
-            throw new ServerError("No tenes autorización para realizar esta acción. Por favor, ingresa con el correo correcto.", 403)
         }
 
         // Busco al miembro

@@ -68,7 +68,6 @@ class MemberWorkspaceController {
 
     async responseToInvitation(req, res, next) {
         const { response_token } = req.query
-        const user_email = req.user.email
         
         try {
             // Si no proporciona el token
@@ -82,8 +81,7 @@ class MemberWorkspaceController {
             const newMember = await memberWorkspaceService.responseToInvitation(
                 payload.email,
                 payload.newMember_id,
-                payload.action,
-                user_email
+                payload.action
             )
 
             const message = payload.action === 'accepted' 
