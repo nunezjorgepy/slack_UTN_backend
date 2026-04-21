@@ -6,9 +6,9 @@ import workspaceService from "../services/workspace.service.js"
 class WorkspaceController {
     async create(req, res, next) {
         try {
-            const { title, description = '', url_image = '' } = req.body
+            const { title, description = '(Sin descripción)', url_image = '' } = req.body
             const user = req.user
-            const workspace = await workspaceService.create(
+            const {workspace, channel} = await workspaceService.create(
                 user,
                 title,
                 description,
@@ -21,7 +21,8 @@ class WorkspaceController {
                     status: 201,
                     message: 'Espacio de trabajo creado',
                     data: {
-                        workspace
+                        workspace,
+                        channel_id: channel.channel_id
                     }
                 }
             )

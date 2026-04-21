@@ -2,6 +2,7 @@ import { isValidObjectId } from "mongoose";
 import ServerError from "../helpers/error.helper.js";
 import workspaceRepository from "../repository/workspace.repository.js";
 import memberWorkspaceService from "./memberWorkspace.service.js";
+import channelService from "./channel.service.js";
 
 
 class WorkscapeService {
@@ -10,16 +11,22 @@ class WorkscapeService {
         if (!user || !title) {
             throw new ServerError("Todos los campos son obligatorios", 400)
         }
-        const workspace_created = await workspaceRepository.create(title, description, url_image)
+        let workspace = await workspaceRepository.create(title, description, url_image)
         await memberWorkspaceService.create(
             user.id,
-            workspace_created._id,
+            workspace._id,
             'owner',
             true,
             undefined
         )
+        // Crea canal por defecto
+        const channel = await channelService.create(
+            workspace._id,
+            'Primer canal',
+            'Canal generado automáticamente. Podes cambiar el nombre y la descripción si lo deseas.'
+        )
 
-        return workspace_created
+        return { workspace, channel }
     }
 
     async getById(workspace_id) {
