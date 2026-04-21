@@ -23,7 +23,17 @@ class ChannelService {
 
     }
 
+    async getOneChannelByWorkspaceId(workspace_id) {
+        if(!workspace_id) {
+            throw new ServerError("Faltan campos obligatorios", 400)
+        }
+
+        const channel = await channelRepository.getOneChannelByWorkspaceId(workspace_id)
+        return channel
+    }
+
     async getById(workspace_id, channel_id) {
+        // TODO DELETE: no sé si realmente hace algo esta función. Verificar y borrar.
         if(!workspace_id || !channel_id) {
             throw new ServerError("Faltan campos obligatorios", 400)
         }

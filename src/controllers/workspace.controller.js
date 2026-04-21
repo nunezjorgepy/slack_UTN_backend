@@ -2,6 +2,7 @@ import ServerError from "../helpers/error.helper.js"
 import channelRepository from "../repository/channel.repository.js"
 import workspaceMemberRepository from "../repository/member.repository.js"
 import workspaceService from "../services/workspace.service.js"
+import channelService from "../services/channel.service.js"
 
 class WorkspaceController {
     async create(req, res, next) {
@@ -87,13 +88,25 @@ class WorkspaceController {
         try {
             const user = req.user
             const workspaces = await workspaceService.getActiveByUserID(user.id)
+
+            // Para cada espacio de trabajo, obtener el primer canal
+            const workspaces_with_channel = await Promise.all(
+                workspaces.map(async (workspace) => {
+                    const channel = await channelService.getOneChannelByWorkspaceId(workspace.workspace_id)
+                    return {
+                        ...workspace,
+                        channel_id: channel ? channel.channel_id : null
+                    }
+                })
+            )
+
             res.json(
                 {
                     ok: true,
                     status: 200,
                     message: 'Espacios de trabajo obtenidos',
                     data: {
-                        workspaces
+                        workspaces: workspaces_with_channel
                     }
                 }
             )
