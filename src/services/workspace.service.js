@@ -3,6 +3,7 @@ import ServerError from "../helpers/error.helper.js";
 import workspaceRepository from "../repository/workspace.repository.js";
 import memberWorkspaceService from "./memberWorkspace.service.js";
 import channelService from "./channel.service.js";
+import { createWorkspaceValidations } from "../validations/index.js";
 
 
 class WorkscapeService {
@@ -11,6 +12,18 @@ class WorkscapeService {
         if (!user || !title) {
             throw new ServerError("Todos los campos son obligatorios", 400)
         }
+
+        // Validaciones del input
+        const validation_errors = createWorkspaceValidations({
+            title,
+            description,
+            url_image
+        })
+        if (validation_errors) {
+            throw new ServerError(validation_errors, 400)
+        }
+
+        // Si no hay errores, crear el espacio de trabajo
         let workspace = await workspaceRepository.create(title, description, url_image)
         await memberWorkspaceService.create(
             user.id,
@@ -67,12 +80,25 @@ class WorkscapeService {
         if (!workspace_id || !title) {
             throw new ServerError("Todos los campos son obligatorios", 400)
         }
-        return await workspaceRepository.edit(
+
+        // Validaciones del input
+        const validation_errors = createWorkspaceValidations({
+            title,
+            description,
+            url_image
+        })
+        if (validation_errors) {
+            throw new ServerError(validation_errors, 400)
+        }
+
+        // Si no hay errores, editar el espacio de trabajo
+        const edited_workspace = await workspaceRepository.edit(
             workspace_id,
             title,
             description,
             url_image
         )
+        return edited_workspace
 
     }
 
