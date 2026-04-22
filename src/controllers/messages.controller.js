@@ -1,4 +1,3 @@
-import ServerError from "../helpers/error.helper.js"
 import messageService from "../services/message.service.js"
 
 
@@ -9,7 +8,7 @@ class MessageController {
             const user = req.user
             const channel_id = req.params.channel_id
 
-            const message = await messageService.create(user.id, channel_id, content)
+            const message = await messageService.create(user.id, channel_id, content.trim())
 
             return res.status(201).json(
                 {
@@ -43,25 +42,7 @@ class MessageController {
                 }
             )
         } catch (error) {
-            if (error instanceof ServerError) {
-                return res.status(error.status).json(
-                    {
-                        ok: false,
-                        status: error.status,
-                        message: error.message
-                    }
-                )
-            }
-            else {
-                console.error('Error inesperado en el registro', error)
-                return res.status(500).json(
-                    {
-                        ok: false,
-                        status: 500,
-                        message: "Internal server error"
-                    }
-                )
-            }
+            next(error)
         }
     }
 }

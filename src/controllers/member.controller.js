@@ -44,10 +44,10 @@ class MemberWorkspaceController {
             }
 
             const newMember = await memberWorkspaceService.inviteMember(
-                email,
+                email.trim(),
                 workspace,
-                role,
-                member_email
+                role.trim(),
+                member_email.trim()
             )
             
             res.status(200).json(

@@ -1,4 +1,3 @@
-import ServerError from "../helpers/error.helper.js"
 import channelService from "../services/channel.service.js"
 import messageService from "../services/message.service.js"
 
@@ -9,7 +8,11 @@ class ChannelController {
             const workspace = req.workspace
             const { name, description } = req.body
 
-            const channel = await channelService.create(workspace._id, name, description)
+            const channel = await channelService.create(
+                workspace._id, 
+                name.trim(), 
+                description.trim()
+            )
             
             res.status(201).json(
                 {

@@ -1,5 +1,3 @@
-import ServerError from "../helpers/error.helper.js";
-import userRepository from "../repository/user.repository.js";
 import authService from "../services/auth.service.js";
 
 class AuthController {
@@ -9,7 +7,12 @@ class AuthController {
 
             const { email, name, password, confirmPassword } = req.body;
 
-            await authService.register({ name, email, password, confirmPassword })
+            await authService.register({ 
+                name: name.trim(), 
+                email: email.trim(), 
+                password: password.trim(), 
+                confirmPassword: confirmPassword.trim()
+            })
 
             return res.status(201).json({
                 ok: true,

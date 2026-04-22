@@ -41,6 +41,10 @@ class MemberWorkspaceService {
          * @returns {Object} - Objeto con los datos del nuevo miembro
          */
 
+        /* 
+            TODO CHECK:
+                - ¿Son necesarias las validaciones de la carpeta validations, teniendo en cuenta que las hago exclusivamente acá?
+        */
         if (!email || !workspace || !role) {
             throw new ServerError("Todos los campos son obligatorios", 404)
         }

@@ -1,4 +1,3 @@
-import ServerError from "../helpers/error.helper.js"
 import channelRepository from "../repository/channel.repository.js"
 import workspaceMemberRepository from "../repository/member.repository.js"
 import workspaceService from "../services/workspace.service.js"
@@ -11,9 +10,9 @@ class WorkspaceController {
             const user = req.user
             const {workspace, channel} = await workspaceService.create(
                 user,
-                title,
-                description,
-                url_image
+                title.trim(),
+                description.trim(),
+                url_image.trim()
             )
 
             res.status(201).json(
