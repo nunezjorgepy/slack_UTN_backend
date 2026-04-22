@@ -1,11 +1,15 @@
 import channelRepository from "../repository/channel.repository.js"
 import ServerError from "../helpers/error.helper.js"
+import { createChannelValidations } from "../../validations/createChannelValidations.js"
+
 
 
 class ChannelService {
     async create(workspace_id, name, description = '') {
-        if(!workspace_id || !name) {
-            throw new ServerError("Faltan campos obligatorios", 400)
+        // Validaciones para los inputs
+        const create_channel_validations_errors = createChannelValidations({ name, description })
+        if (create_channel_validations_errors) {
+            throw new ServerError(create_channel_validations_errors, 400)
         }
 
         const channel = await channelRepository.create(workspace_id, name, description)
