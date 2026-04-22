@@ -10,15 +10,19 @@ import mailerTransporter from "../config/mailer.config.js";
 import ServerError from "../helpers/error.helper.js";
 import userRepository from "../repository/user.repository.js";
 import bcrypt from 'bcrypt'
+import { 
+    registerValidation, 
+    loginValidation, 
+    changePasswordRequestValidations, 
+    changePasswordValidations 
+} from "../../validations/index.js";
 
 class AuthService {
     async register({ name, email, password, confirmPassword }) {
-        if (!name || !email || !password || !confirmPassword) {
-            throw new ServerError("Todos los campos son obligatorios", 400);
-        }
-
-        if (password !== confirmPassword) {
-            throw new ServerError("Las contraseñas no coinciden", 400);
+        
+        let register_validations_errors = registerValidation(name, email, password, confirmPassword)
+        if (register_validations_errors) {
+            throw new ServerError(register_validations_errors, 400)
         }
 
         const userByEmail = await userRepository.getByEmail(email);
@@ -65,13 +69,21 @@ class AuthService {
     }
 
     async login({email, password}){
+        // Validaciones del input
+        const login_validations_errors = loginValidation(email, password)
+        if (login_validations_errors) {
+            throw new ServerError(login_validations_errors, 400)
+        }
+        // Busco el usuario por email
         const user = await userRepository.getByEmail(email);
         if (!user) {
             throw new ServerError('Usuario o contraseña incorrectos', 404);
         }
+        // Verifico que el usuario haya verificado su correo
         if (!user.email_verified) {
             throw new ServerError('El usuario no ha verificado su correo', 401);
         }
+        // Comparo la contraseña ingresada con la hasheada
         const is_same_password = await bcrypt.compare(password, user.password)
         if (!is_same_password) {
             throw new ServerError('Usuario o contraseña incorrectos', 401);
@@ -93,7 +105,7 @@ class AuthService {
     }
 
 
-    async sendVerifyEmail({email, name}) {
+    async sendVerifyEmail({ email, name }) {
         //Se crea un token firmado por el backend con el email del usuario a registrar
         const verify_email_token = jwt.sign(
             {
@@ -136,10 +148,13 @@ class AuthService {
 
     }
 
-     async resetPasswordRequest({email}) {
-        if (!email) {
-            throw new ServerError("El email es obligatorio", 400)
+     async resetPasswordRequest({ email }) {
+        // Validaciones del input
+        const reset_password_request_validations_errors = changePasswordRequestValidations(email)
+        if (reset_password_request_validations_errors) {
+            throw new ServerError(reset_password_request_validations_errors, 400)
         }
+        // Validaciones de la base de datos
         const user = await userRepository.getByEmail(email);
         if (!user) {
             throw new ServerError("El usuario no existe", 404)
@@ -183,9 +198,11 @@ class AuthService {
         })
     }
 
-      async resetPassword({reset_password_token, password}) {
-        if (!reset_password_token || !password) {
-            throw new ServerError("Todos los campos son obligatorios", 400)
+      async resetPassword({reset_password_token, password, confirmPassword}) {
+        // Validaciones del input
+        const reset_password_validations_errors = changePasswordValidations(password, confirmPassword)
+        if (reset_password_validations_errors) {
+            throw new ServerError(reset_password_validations_errors, 400)
         }
         // Verificamos que el token sea valido
         const { email } = jwt.verify(reset_password_token, ENVIRONMENT.JWT_SECRET_KEY);
