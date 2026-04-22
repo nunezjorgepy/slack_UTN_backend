@@ -1,6 +1,6 @@
 import channelRepository from "../repository/channel.repository.js"
 import ServerError from "../helpers/error.helper.js"
-import { createChannelValidations } from "../../validations/createChannelValidations.js"
+import { createChannelValidations } from "../validations/createChannelValidations.js"
 
 
 

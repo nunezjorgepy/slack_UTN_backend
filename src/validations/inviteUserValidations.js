@@ -1,4 +1,4 @@
-import ROLE_CONSTANTS from "../src/constants/roles.constants.js";
+import ROLE_CONSTANTS from "../constants/roles.constants.js";
 import { emailValidation } from "./shared/email.validation.js";
 
 

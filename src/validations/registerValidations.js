@@ -24,6 +24,11 @@ export const registerValidation = (name, email, password, confirmPassword) => {
     else if (trimmed_lower_name.length < 3) name_error = 'El nombre debe tener al menos 3 caracteres.'
     else if (trimmed_lower_name.length > 50) name_error = 'El nombre debe tener menos de 50 caracteres.'
 
+    // Validar que exista confirmPassword
+    if (!confirmPassword) {
+        return 'La confirmación de contraseña es requerida'
+    }
+
     let error = name_error || emailValidation(email) || passwordValidation(password, confirmPassword)
 
     return error || null

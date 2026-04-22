@@ -15,7 +15,7 @@ import {
     loginValidation, 
     changePasswordRequestValidations, 
     changePasswordValidations 
-} from "../../validations/index.js";
+} from "../validations/index.js";
 
 class AuthService {
     async register({ name, email, password, confirmPassword }) {
