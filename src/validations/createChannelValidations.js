@@ -1,6 +1,6 @@
 const ADD_CHANNEL_CONSTANTS = {
     name_min_length: 3,
-    name_max_length: 50,
+    name_max_length: 25,
     description_min_length: 3,
     description_max_length: 100
 }
