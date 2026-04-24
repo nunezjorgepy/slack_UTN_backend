@@ -3,6 +3,19 @@ import ServerError from "../helpers/error.helper.js"
 import channelRepository from "../repository/channel.repository.js"
 
 async function verifyChannelMiddleware(req, res, next) {
+    /**
+     * Descripción:
+     * - Se encarga de verificar si el canal existe
+     * - Se encarga de verificar si el canal pertenece al espacio de trabajo
+     * 
+     * Recibe:
+     * - req: El objeto de solicitud
+     * - res: El objeto de respuesta
+     * - next: La funcion next
+     * 
+     * Agrega en el request (o req):
+     * - req.channel: El objeto del canal
+     */
     const { channel_id } = req.params
     const workspace_id = req.workspace._id
     

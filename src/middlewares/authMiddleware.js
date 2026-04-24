@@ -3,6 +3,19 @@ import ENVIRONMENT from '../config/environment.config.js'
 import ServerError from '../helpers/error.helper.js'
 
 function authMiddleware(req, res, next) {
+    /**
+     * Descripción:
+     * - Se encarga de verificar si el usuario esta autenticado y autorizado
+     * - Se encarga de verificar si el token JWT es valido
+     * 
+     * Recibe:
+     * - req: El objeto de solicitud
+     * - res: El objeto de respuesta
+     * - next: La funcion next
+     * 
+     * Agrega en el request (o req):
+     * - req.user: El objeto del usuario
+     */
     try {
         //El token se envia en el header de authorization NORMALMENTE
         const auth_header = req.headers.authorization //'Bearer token'

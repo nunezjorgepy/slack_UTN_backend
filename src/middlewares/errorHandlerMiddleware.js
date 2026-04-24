@@ -1,7 +1,20 @@
 
 
 function errorHandlerMiddleware(error, req, res, next) {
-    console.log("Error: ", error)
+    /**
+     * Descripción:
+     * - Se encarga de manejar los errores
+     * - Se encarga de enviar la respuesta al cliente
+     * 
+     * Recibe:
+     * - error: El error
+     * - req: El objeto de solicitud
+     * - res: El objeto de respuesta
+     * - next: La funcion next
+     * 
+     * Devuelve:
+     * - Una respuesta al cliente con el error, en caso de existir.
+     */
     
     // Si el error tiene un status, es un error controlado (ServerError)
     if (error.status) {

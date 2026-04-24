@@ -4,9 +4,16 @@ import workspaceRepository from "../repository/workspace.repository.js"
 
 async function verifyWorkspaceMiddleware(req, res, next) {
     /**
-     * Descripción: Verifica si el espacio de trabajo existe
-     * @param {string} workspace_id - ID del espacio de trabajo
-     * @returns {JSON} - Espacio de trabajo
+     * Descripción:
+     * - Se encarga de verificar si el espacio de trabajo existe
+     * 
+     * Recibe:
+     * - req: El objeto de solicitud
+     * - res: El objeto de respuesta
+     * - next: La funcion next
+     * 
+     * Agrega en el request (o req):
+     * - req.workspace: El objeto del espacio de trabajo
      */
     const { workspace_id } = req.params
     
@@ -14,6 +21,7 @@ async function verifyWorkspaceMiddleware(req, res, next) {
     if (!workspace_id) {
         throw new ServerError('No se proporcionó el espacio de trabajo', 400)
     }
+    
     // Si no es una id valida
     if(!isValidObjectId(workspace_id)) {
         throw new ServerError("Id de espacio de trabajo invalida", 400)

@@ -4,11 +4,20 @@ import mongoose from "mongoose"
 
 
 function verifyMemberWorkspaceMiddleware(valid_roles = []) {
-    /**
-     * @param {Array<String>} valid_roles - Roles válidos para acceder al recurso
-     * @returns {Function} - Middleware que verifica si el usuario es miembro del workspace
-     */
     return async function (req, res, next) {
+        /**
+         * Descripción:
+         * - Se encarga de verificar si el usuario es miembro del workspace
+         * - Se encarga de verificar si el usuario tiene permiso para realizar la acción
+         * 
+         * Recibe:
+         * - req: El objeto de solicitud
+         * - res: El objeto de respuesta
+         * - next: La funcion next
+         * 
+         * Agrega en el request (o req):
+         * - req.member: El objeto del miembro
+         */
         const { user, workspace } = req
 
         if (!workspace) {
@@ -19,7 +28,6 @@ function verifyMemberWorkspaceMiddleware(valid_roles = []) {
             throw new ServerError('No se proporcionó el usuario', 400)
         }
 
-        // Verifico si es una id valida
         if (!mongoose.Types.ObjectId.isValid(workspace._id)) {
             throw new ServerError('No se proporcionó una id valida', 400)
         }
@@ -39,7 +47,6 @@ function verifyMemberWorkspaceMiddleware(valid_roles = []) {
                 throw new ServerError('El miembro se fue del espacio. Pedir otra invitación.', 401)
             }
 
-            // Si el role no es válido
             if (valid_roles.length > 0 && !valid_roles.includes(member.role)) {
                 throw new ServerError('El usuario no tiene permiso para realizar esta acción', 403)
             }
