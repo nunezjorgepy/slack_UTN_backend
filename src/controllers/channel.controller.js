@@ -93,6 +93,32 @@ class ChannelController {
         }
     }
 
+    async update(req, res, next) {
+        try {
+            const { workspace_id, channel_id } = req.params
+            const { name, description } = req.body
+
+            const update_data = {}
+            if (name !== undefined) update_data.name = name.trim()
+            if (description !== undefined) update_data.description = description.trim()
+
+            const channel = await channelService.update(workspace_id, channel_id, update_data)
+
+            res.status(200).json(
+                {
+                    ok: true,
+                    status: 200,
+                    message: 'Canal actualizado exitosamente',
+                    data: {
+                        channel
+                    }
+                }
+            )
+        } catch (error) {
+            next(error)
+        }
+    }
+
     async delete(req, res, next) {
         try {
             const { workspace, channel } = req

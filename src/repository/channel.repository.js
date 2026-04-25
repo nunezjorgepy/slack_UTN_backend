@@ -53,6 +53,18 @@ class ChannelRepository {
         return normalized_channel
     }
 
+    async update(channel_id, update_data) {
+        const channel = await ChannelModel.findByIdAndUpdate(
+            channel_id,
+            update_data,
+            { new: true }
+        )
+
+        // Normalizo el canal
+        const normalized_channel = channel && new ChannelDTO(channel)
+        return normalized_channel
+    }
+
     async delete(channel_id) {
         const channel = await ChannelModel.findByIdAndDelete(
             channel_id

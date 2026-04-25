@@ -246,6 +246,46 @@ En esta sección se detallan los middlewares encargados de la lógica de autenti
     }
     ```
 
+#### `PATCH /:channel_id`
+- **Descripción**: Edita un canal (Solo Owner/Admin).
+- **Recibe**:
+    - **Params**: `channel_id`
+    - **Body**: `{ name, description }`
+- **Respuesta**:
+    ```json
+    {
+      "ok": true,
+      "status": 200,
+      "message": "Canal actualizado exitosamente",
+      "data": { "channel": {} }
+    }
+    ```
+
+#### `DELETE /soft-delete/:channel_id`
+- **Descripción**: Realiza un borrado lógico del canal (Solo Owner).
+- **Recibe**:
+    - **Params**: `channel_id`
+- **Respuesta**:
+    ```json
+    {
+      "ok": true,
+      "status": 200,
+      "message": "Canal eliminado exitosamente."
+    }
+    ```
+
+#### `DELETE /:channel_id`
+- **Descripción**: Realiza un borrado físico del canal (Solo Owner).
+- **Recibe**:
+    - **Params**: `channel_id`
+- **Respuesta**:
+    ```json
+    {
+      "ok": true,
+      "status": 200,
+      "message": "Canal eliminado exitosamente."
+    }
+    ```
 ---
 
 ### Mensajes (`/api/workspace/:workspace_id/channel/:channel_id/message`)

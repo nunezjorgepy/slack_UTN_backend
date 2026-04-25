@@ -1,6 +1,7 @@
 import channelRepository from "../repository/channel.repository.js"
 import ServerError from "../helpers/error.helper.js"
 import { createChannelValidations } from "../validations/createChannelValidations.js"
+import { updateChannelValidations } from "../validations/updateChannelValidations.js"
 
 
 
@@ -55,6 +56,21 @@ class ChannelService {
         const channel = await channelRepository.softDelete(channel_id)
         return channel
 
+    }
+
+    async update(workspace_id, channel_id, update_data) {
+        if (!workspace_id || !channel_id) {
+            throw new ServerError("Faltan campos obligatorios", 400)
+        }
+
+        // Validaciones para los inputs
+        const update_channel_validations_errors = updateChannelValidations(update_data)
+        if (update_channel_validations_errors) {
+            throw new ServerError(update_channel_validations_errors, 400)
+        }
+
+        const channel = await channelRepository.update(channel_id, update_data)
+        return channel
     }
 
     async delete(workspace_id, channel_id) {

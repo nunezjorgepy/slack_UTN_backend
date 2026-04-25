@@ -41,11 +41,20 @@ channelRouter.get(
     // TODO: preguntar si, como ya consigo el channel en el middleware, hace falta la función del controller
 )
 
+channelRouter.patch(
+    '/:channel_id',
+    authMiddleware,
+    verifyWorkspaceMiddleware,
+    verifyMemberWorkspaceMiddleware([ROLE_CONSTANTS.OWNER, ROLE_CONSTANTS.ADMIN]),
+    verifyChannelMiddleware,
+    channelController.update
+)
+
 channelRouter.delete(
     '/soft-delete/:channel_id',
     authMiddleware,
     verifyWorkspaceMiddleware,
-    verifyMemberWorkspaceMiddleware([ROLE_CONSTANTS.OWNER, ROLE_CONSTANTS.ADMIN]),
+    verifyMemberWorkspaceMiddleware([ROLE_CONSTANTS.OWNER]),
     verifyChannelMiddleware,
     channelController.softDelete
 )
@@ -54,7 +63,7 @@ channelRouter.delete(
     '/delete/:channel_id',
     authMiddleware,
     verifyWorkspaceMiddleware,
-    verifyMemberWorkspaceMiddleware([ROLE_CONSTANTS.OWNER, ROLE_CONSTANTS.ADMIN]),
+    verifyMemberWorkspaceMiddleware([ROLE_CONSTANTS.OWNER]),
     verifyChannelMiddleware,
     channelController.delete
 )
