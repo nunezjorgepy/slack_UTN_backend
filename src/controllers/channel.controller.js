@@ -1,5 +1,6 @@
 import channelService from "../services/channel.service.js"
 import messageService from "../services/message.service.js"
+import workspaceMemberRepository from "../repository/member.repository.js"
 
 
 class ChannelController {
@@ -52,9 +53,15 @@ class ChannelController {
     async getById(req, res, next) {
         try {
             const { workspace, channel } = req
-            // TODO: cambiar la forma en la que se obtiene el canal a req.channel (después de crear el middleware)
-            const channel_found = await channelService.getById(workspace._id, channel.channel_id)
-            const messages = await messageService.getAll(channel_found.channel_id)
+            const workspace_id = workspace._id
+            const channel_id = channel.channel_id
+
+            // Obtener todos los mensajes del canal
+            const messages = await messageService.getAll(channel_id)
+            
+            // Obtener información adicional del workspace
+            const members = await workspaceMemberRepository.getActiveMemberList(workspace_id)
+            const channels = await channelService.getActiveByWorkspaceId(workspace_id)
             
             res.status(200).json(
                 {
@@ -62,7 +69,10 @@ class ChannelController {
                     status: 200,
                     message: 'Canal obtenido exitosamente',
                     data: {
-                        channel: channel_found,
+                        workspace,
+                        members,
+                        channels,
+                        member_logged: req.member,
                         messages
                     }
                 }
