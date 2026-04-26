@@ -26,7 +26,7 @@ class ChannelRepository {
     }
 
     async getOneChannelByWorkspaceId(workspace_id) {
-        const channel = await ChannelModel.findOne({ fk_id_workspace: workspace_id })
+        const channel = await ChannelModel.findOne({ fk_id_workspace: workspace_id, is_active: true })
 
         // Normalizo el canal, solamente si existe
         const normalized_channel = channel && new ChannelDTO(channel)
