@@ -41,7 +41,7 @@ class WorkspaceController {
         try {
             const workspace = await workspaceService.getById(workspace_id)
             const members = await workspaceMemberRepository.getActiveMemberList(workspace_id)
-            const channels = await channelRepository.getAll(workspace_id)
+            const channels = await channelService.getActiveByWorkspaceId(workspace_id)
 
             res.json(
                 {

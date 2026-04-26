@@ -28,6 +28,16 @@ class ChannelService {
 
     }
 
+    async getActiveByWorkspaceId(workspace_id) {
+        if(!workspace_id) {
+            throw new ServerError("Faltan campos obligatorios", 400)
+        }
+
+        const channels = await channelRepository.getActiveByWorkspaceId(workspace_id)
+        return channels
+
+    }
+
     async getOneChannelByWorkspaceId(workspace_id) {
         if(!workspace_id) {
             throw new ServerError("Faltan campos obligatorios", 400)

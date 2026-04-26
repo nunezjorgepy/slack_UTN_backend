@@ -25,6 +25,16 @@ class ChannelRepository {
         return normalizedChannels
     }
 
+    async getActiveByWorkspaceId(workspace_id) {
+        const channels = await ChannelModel.find({ fk_id_workspace: workspace_id, is_active: true })
+
+        // Normalizo los canales
+        const normalizedChannels = channels.map(channel => {
+            return new ChannelDTO(channel)
+        })
+        return normalizedChannels
+    }
+
     async getOneChannelByWorkspaceId(workspace_id) {
         const channel = await ChannelModel.findOne({ fk_id_workspace: workspace_id, is_active: true })
 
