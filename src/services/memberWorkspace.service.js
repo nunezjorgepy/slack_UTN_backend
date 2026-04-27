@@ -116,6 +116,9 @@ class MemberWorkspaceService {
             }
         )
 
+        const accept_invitation_url = `${ENVIRONMENT.URL_FRONTEND}/response-to-invitation?token=${accept_invitation_token}`
+        const reject_invitation_url = `${ENVIRONMENT.URL_FRONTEND}/response-to-invitation?token=${reject_invitation_token}`
+
         /* TODO: Agregar el nombre del espacio de trabajo. Verificar si viene de req.workspace */
         /* TODO: Agregar el nombre del usuario que envia la invitación. Verificar si viene de req.user */
         /* TODO: en vez de /accept-invitation y /reject-invitation, usar /response-to-invitation */
@@ -132,11 +135,11 @@ class MemberWorkspaceService {
                         Hola <strong>${email}</strong>, has sido invitado a unirte al espacio de trabajo <strong>${workspace_title}</strong>. Puedes aceptar o rechazar esta invitación utilizando los siguientes botones:
                     </p>
                     <div style="margin-bottom: 24px; text-align: center;">
-                        <a href="${ENVIRONMENT.URL_FRONTEND}/${workspace_id}/response-to-invitation?token=${accept_invitation_token}" 
+                        <a href="${accept_invitation_url}" 
                            style="display: inline-block; background-color: #611f69; color: #ffffff; font-size: 16px; font-weight: 500; text-decoration: none; padding: 12px 24px; border-radius: 6px; margin: 8px 10px;">
                             Aceptar invitación
                         </a>
-                        <a href="${ENVIRONMENT.URL_FRONTEND}/${workspace_id}/response-to-invitation?token=${reject_invitation_token}" 
+                        <a href="${reject_invitation_url}" 
                            style="display: inline-block; background-color: #ef4444; color: #ffffff; font-size: 16px; font-weight: 500; text-decoration: none; padding: 12px 24px; border-radius: 6px; margin: 8px 10px;">
                             Rechazar invitación
                         </a>
@@ -144,9 +147,9 @@ class MemberWorkspaceService {
                     <p style="color: #9ca3af; font-size: 13px; line-height: 20px; margin-top: 32px; border-top: 1px solid #e5e7eb; padding-top: 24px;">
                         Si los botones no funcionan, puedes usar los siguientes enlaces en tu navegador:<br><br>
                         <strong>Para aceptar:</strong><br>
-                        <a href="${ENVIRONMENT.URL_FRONTEND}/response-to-invitation?token=${accept_invitation_token}" style="color: #611f69; word-break: break-all;">${ENVIRONMENT.URL_FRONTEND}/response-to-invitation?token=${accept_invitation_token}</a><br><br>
+                        <a href="${accept_invitation_url}" style="color: #611f69; word-break: break-all;">${accept_invitation_url}</a><br><br>
                         <strong>Para rechazar:</strong><br>
-                        <a href="${ENVIRONMENT.URL_FRONTEND}/response-to-invitation?token=${reject_invitation_token}" style="color: #ef4444; word-break: break-all;">${ENVIRONMENT.URL_FRONTEND}/response-to-invitation?token=${reject_invitation_token}</a>
+                        <a href="${reject_invitation_url}" style="color: #ef4444; word-break: break-all;">${reject_invitation_url}</a>
                     </p>
                     <p style="color: #9ca3af; font-size: 12px; margin-top: 16px;">
                         Si no esperabas esta invitación o no conoces este espacio de trabajo, puedes ignorar o rechazar este correo de forma segura.
