@@ -138,6 +138,48 @@
             }
           },
           "response": []
+        },
+        {
+          "name": "Verify Email",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im51bmV6LmpvcmdlQGhvdG1haWwuY29tIiwibmFtZSI6IkpvcmdlIEFsYmVydG8gTnVleiIsImlkIjoiNjljY2EyNTI5MmIwYTEyMWExNDRmZjFiIiwiY3JlYXRlZF9hdCI6IjIwMjYtMDQtMDFUMDQ6NDI6NTguNDI5WiIsImlhdCI6MTc3NTQ0MTgzMH0.aDhIgmPS56XnBp4Sg1XytSmzuNAqRY-CddeXqBN9Rew",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"nunez.jorge@hotmail.com\",\r\n    \"password\": \"myPass1234\"\r\n}"
+            },
+            "url": {
+              "raw": "{{URL_API_SLACK}}/api/auth/verify-email?verify_email_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImN1ZW50YS5wYXJhLnBvZGVyLnV0bkBnbWFpbC5jb20iLCJuYW1lIjoiSm9yZ2UgTnXDsWV6IiwiaWF0IjoxNzc2NjM5MDY1LCJleHAiOjE3NzcyNDM4NjV9.alFvTCs7Nr9MjWsBFjg96C1-cCpFIxw8Ux5oiDnh74Q",
+              "host": [
+                "{{URL_API_SLACK}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "verify-email"
+              ],
+              "query": [
+                {
+                  "key": "verify_email_token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImN1ZW50YS5wYXJhLnBvZGVyLnV0bkBnbWFpbC5jb20iLCJuYW1lIjoiSm9yZ2UgTnXDsWV6IiwiaWF0IjoxNzc2NjM5MDY1LCJleHAiOjE3NzcyNDM4NjV9.alFvTCs7Nr9MjWsBFjg96C1-cCpFIxw8Ux5oiDnh74Q"
+                }
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -540,7 +582,7 @@
                 }
               ]
             },
-            "method": "PUT",
+            "method": "PATCH",
             "header": [],
             "body": {
               "mode": "raw",

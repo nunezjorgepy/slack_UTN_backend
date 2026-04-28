@@ -33,7 +33,7 @@ memberWorkspaceRouter.delete(
     memberWorkspaceController.deleteMember
 )
 
-memberWorkspaceRouter.put(
+memberWorkspaceRouter.patch(
     '/:member_id',
     authMiddleware,
     verifyWorkspaceMiddleware,
