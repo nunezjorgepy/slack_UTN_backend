@@ -17,6 +17,46 @@ La persistencia de datos se realiza utilizando **MongoDB** como base de datos.
 
 ---
 
+## Instalación y Ejecución
+
+### Requisitos previos
+- Tener instalado [Node.js](https://nodejs.org/)
+- Tener instalado [npm](https://www.npmjs.com/)
+- Tener instalado [MongoDB](https://www.mongodb.com/)
+
+### Pasos de instalación y ejecución
+
+1. **Clonar el repositorio:**
+   ```bash
+   git clone https://github.com/nunezjorgepy/slack_UTN_backend.git
+   ```
+
+2. **Instalar dependencias:**
+   ```bash
+   npm install
+   ```
+
+3. **Configurar variables de entorno:**
+   Crea un archivo `.env` en la raíz con la URL de tu API:
+   ```env
+    MONGO_DB_CONNECTION_STRING=
+    PORT=8080
+    MAIL_PASSWORD=
+    MAIL_USER=
+
+    URL_BACKEND=http://localhost:8080
+    URL_FRONTEND=http://localhost:5173
+
+    JWT_SECRET_KEY=
+   ```
+
+4. **Iniciar el servidor de desarrollo:**
+   ```bash
+   npm run dev
+   ```
+
+---
+
 ## Middlewares
 
 En esta sección se detallan los middlewares encargados de la lógica de autenticación, autorización y validación de datos.
